@@ -133,9 +133,7 @@ function convertRule(rule) {
       stream = stream.stream;
     }
 
-    const trigger = {
-      platform: "device"
-    };
+    const trigger = {};
 
     // convert stream info to automation trigger
     if (info.invocation) {
@@ -153,6 +151,7 @@ function convertRule(rule) {
                   domain: "climate"
                 }
               };
+              trigger.platform = "device";
               trigger.entity_id = "placeholder:trigger_climate_entity";
               trigger.domain = "climate";
               trigger.type = "current_temperature";
@@ -180,11 +179,53 @@ function convertRule(rule) {
               }
 
               break;
+            default:
+              warn = true;
+          }
+
+        case "org.thingpedia.builtin.thingengine.builtin":
+          switch (channel) {
+            case "get_gps":
+              automation.placeholder_info.trigger_person_zone = {
+                type: "entity",
+                filter: {
+                  domain: "person"
+                }
+              };
+              trigger.platform = "zone";
+              trigger.entity_id = "placeholder:trigger_person_zone";
+
+              for (const filter of info.filters) {
+                switch (filter.operator) {
+                  case "==":
+                    trigger.zone = `zone.${filter.value.value.relativeTag}`;
+                    break;
+
+                  default:
+                    console.warn(
+                      "Unknown operator for filter",
+                      kind,
+                      channel,
+                      filter
+                    );
+                }
+              }
+              break;
 
             default:
               warn = true;
           }
+
           break;
+
+        case "org.thingpedia.weather":
+          switch (channel) {
+            default:
+              warn = true;
+          }
+
+          break;
+
         default:
           warn = true;
       }
@@ -204,7 +245,7 @@ function convertRule(rule) {
   if (rule.table) {
     const info = getTableInfo(rule.table);
 
-    if (info.invocation && info.filters.length > 0) {
+    if (info.invocation) {
       const condition = {};
 
       const kind = info.invocation.selector.kind;
@@ -253,6 +294,7 @@ function convertRule(rule) {
               warn = true;
           }
           break;
+
         default:
           warn = true;
       }
