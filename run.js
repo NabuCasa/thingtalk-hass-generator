@@ -92,10 +92,7 @@ function printRule(rule) {
 }
 
 function convertRule(rule) {
-  const automation = {
-    placeholder_info: {},
-    placeholder: {}
-  };
+  const automation = {};
 
   // Check for a trigger
   if (rule.stream) {
@@ -145,14 +142,8 @@ function convertRule(rule) {
         case "thermostat":
           switch (channel) {
             case "get_temperature":
-              automation.placeholder_info.trigger_climate_device = {
-                type: "entity",
-                filter: {
-                  domain: "climate"
-                }
-              };
               trigger.platform = "device";
-              trigger.entity_id = "placeholder:trigger_climate_entity";
+              trigger.entity_id = "";
               trigger.domain = "climate";
               trigger.type = "current_temperature";
 
@@ -186,14 +177,8 @@ function convertRule(rule) {
         case "org.thingpedia.builtin.thingengine.builtin":
           switch (channel) {
             case "get_gps":
-              automation.placeholder_info.trigger_person_zone = {
-                type: "entity",
-                filter: {
-                  domain: "person"
-                }
-              };
               trigger.platform = "zone";
-              trigger.entity_id = "placeholder:trigger_person_zone";
+              trigger.entity_id = "";
 
               for (const filter of info.filters) {
                 switch (filter.operator) {
@@ -256,14 +241,7 @@ function convertRule(rule) {
         case "thermostat":
           switch (channel) {
             case "get_temperature":
-              automation.placeholder_info.condition_climate_device = {
-                type: "device",
-                filter: {
-                  domain: "climate"
-                }
-              };
-              automation.placeholder.climate_device = "";
-              condition.device_id = "placeholder:climate_device";
+              condition.device_id = "";
               condition.domain = "climate";
               condition.type = "current_temperature";
 
@@ -321,19 +299,14 @@ function convertRule(rule) {
           switch (channel) {
             // This one is probably generalizable?
             case "set_power":
-              automation.placeholder_info.action_set_power_entity = {
-                type: "entity",
-                filter: {
-                  domain: "light"
-                }
-              };
               actions.push({
                 platform: "device",
+                domain: "light",
                 type:
                   getParamValue(in_params, "power") == "on"
                     ? "turn_on"
                     : "turn_off",
-                entity_id: "placeholder:action_set_power_entity"
+                entity_id: ""
               });
               break;
 
@@ -358,15 +331,6 @@ function convertRule(rule) {
       } else if (automation) {
         automation.action = actions;
       }
-    }
-  }
-
-  if (Object.keys(automation.placeholder_info).length === 0) {
-    delete automation.placeholder;
-    delete automation.placeholder_info;
-  } else {
-    for (const key of Object.keys(automation.placeholder_info)) {
-      automation.placeholder[key] = "";
     }
   }
 
