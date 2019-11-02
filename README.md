@@ -12,6 +12,7 @@ npm install
 
 ## TODO
 
+- Update thingpedia.tt with the actual one. Can we auto-download it?
 - Can we make this a lib that we can publish to NPM ?
 - Break up code into multiple files
 - Convert to TypeScript
