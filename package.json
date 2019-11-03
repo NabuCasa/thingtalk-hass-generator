@@ -2,7 +2,7 @@
   "name": "thingtalk-hass-generator",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "update-tt": "curl https://thingpedia.stanford.edu/thingpedia/api/v3/snapshot/-1 -othingpedia.tt"
