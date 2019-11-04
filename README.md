@@ -1,13 +1,20 @@
+## Demo
+
+```
+yarn run demo
+```
+
 ## Run
 
 ```
-node lib/index.js
+script/start
 ```
 
 ## Set up dev env
 
 ```
-npm install
+script/setup
+script/develop
 ```
 
 ## TODO

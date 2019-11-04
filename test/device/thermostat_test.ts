@@ -18,7 +18,22 @@ describe("Thermostat trigger", () => {
 
 describe("Thermostat conditions", () => {
   it("should handle temperature check", () => {
-    assert.fail();
+    const condition = thermostat.CONDITIONS.get_temperature({
+      filters: [
+        {
+          operator: ">=",
+          value: {
+            value: "20"
+          }
+        }
+      ]
+    });
+    assert.deepEqual(condition, {
+      domain: "climate",
+      type: "current_temperature",
+      above: "20",
+      device_id: ""
+    });
   });
   it("should handle humidity check", () => {
     assert.fail();
@@ -36,7 +51,25 @@ describe("Thermostat actions", () => {
     assert.fail();
   });
   it("should handle changing target temperature", () => {
-    assert.fail();
+    const action = thermostat.ACTIONS.set_target_temperature({
+      invocation: {
+        in_params: [
+          {
+            name: "value",
+            value: {
+              value: "15"
+            }
+          }
+        ]
+      }
+    });
+    assert.deepEqual(action, {
+      platform: "device",
+      domain: "climate",
+      type: "target_temperature",
+      temperature: "15",
+      entity_id: ""
+    });
   });
   it("should handle changing target temperature range", () => {
     assert.fail();

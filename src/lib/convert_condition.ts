@@ -1,6 +1,14 @@
-const { getTableInfo } = require("./rule");
+import { getTableInfo, Rule } from "./rule";
 
-module.exports.convertCondition = (automation, rule) => {
+export interface Condition {
+  platform?: string;
+  entity_id?: string;
+  domain?: string;
+  device_id?: string;
+  type?: string;
+}
+
+export const convertCondition = async (rule: Rule) => {
   // Process the filter on the expression
   // This becomes the condition.
   if (!rule.table) {
@@ -19,7 +27,7 @@ module.exports.convertCondition = (automation, rule) => {
   let kindPackage;
 
   try {
-    kindPackage = require(`./device/${kind}`);
+    kindPackage = await import(`./device/${kind}`);
   } catch (err) {
     console.warn(`Condition: Unknown kind ${kind}`);
     return;
@@ -32,7 +40,7 @@ module.exports.convertCondition = (automation, rule) => {
 
   const channelFunc = kindPackage.CONDITIONS[channel];
 
-  if (!channel) {
+  if (!channelFunc) {
     console.warn(`Condition: Unknown channel ${channel} for kind ${kind}`);
     return;
   }
@@ -44,5 +52,5 @@ module.exports.convertCondition = (automation, rule) => {
     return;
   }
 
-  automation.condition = condition;
+  return condition;
 };
