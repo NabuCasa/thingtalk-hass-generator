@@ -1,15 +1,23 @@
-const { getTableInfo } = require("./rule");
+import { getTableInfo, Rule, Info, Stream } from "./rule";
 
-module.exports.convertTrigger = (automation, rule) => {
+export interface Trigger {
+  platform?: string;
+  entity_id?: string;
+  domain?: string;
+  device_id?: string;
+  type?: string;
+}
+
+export const convertTrigger = async (rule: Rule) => {
   // Check for a trigger
   if (!rule.stream) {
     return;
   }
 
   // Gather stream info
-  let stream = rule.stream;
+  let stream: Stream | undefined = rule.stream;
 
-  const info = {
+  const info: Info = {
     filters: []
   };
 
@@ -51,7 +59,7 @@ module.exports.convertTrigger = (automation, rule) => {
   let kindPackage;
 
   try {
-    kindPackage = require(`./device/${kind}`);
+    kindPackage = await import(`./device/${kind}`);
   } catch (err) {
     console.warn(`Trigger: Unknown kind ${kind}`);
     return;
@@ -64,7 +72,7 @@ module.exports.convertTrigger = (automation, rule) => {
 
   const channelFunc = kindPackage.TRIGGERS[channel];
 
-  if (!channel) {
+  if (!channelFunc) {
     console.warn(`Trigger: Unknown channel ${channel} for kind ${kind}`);
     return;
   }
@@ -76,5 +84,5 @@ module.exports.convertTrigger = (automation, rule) => {
     return;
   }
 
-  automation.trigger = trigger;
+  return trigger;
 };

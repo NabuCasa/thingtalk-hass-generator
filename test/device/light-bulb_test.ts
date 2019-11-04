@@ -1,5 +1,5 @@
-const assert = require("assert");
-const lightBulb = require("../../lib/device/light-bulb");
+import { assert } from "chai";
+import { ACTIONS } from "../../src/lib/device/light-bulb";
 
 describe("Light Bulb triggers", () => {
   it("should handle an ON trigger", () => {
@@ -12,7 +12,7 @@ describe("Light Bulb triggers", () => {
 
 describe("Light Bulb actions", () => {
   it("should handle an ON action", () => {
-    const action = lightBulb.ACTIONS.set_power({
+    const action = ACTIONS.set_power({
       invocation: {
         in_params: [
           {
@@ -32,7 +32,7 @@ describe("Light Bulb actions", () => {
     });
   });
   it("should handle an OFF action", () => {
-    const action = lightBulb.ACTIONS.set_power({
+    const action = ACTIONS.set_power({
       invocation: {
         in_params: [
           {

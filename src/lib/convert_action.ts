@@ -1,10 +1,12 @@
-module.exports.convertAction = (automation, rule) => {
+import { Rule } from "./rule";
+
+export const convertAction = async (rule: Rule) => {
   // Process the action
   if (!rule.actions) {
     return;
   }
 
-  const actions = [];
+  const actions: any[] = [];
 
   for (const action of rule.actions) {
     const kind = action.invocation.selector.kind;
@@ -13,7 +15,7 @@ module.exports.convertAction = (automation, rule) => {
     let kindPackage;
 
     try {
-      kindPackage = require(`./device/${kind}`);
+      kindPackage = await import(`./device/${kind}`);
     } catch (err) {
       console.warn(`Action: Unknown kind ${kind}`);
       continue;
@@ -26,7 +28,7 @@ module.exports.convertAction = (automation, rule) => {
 
     const channelFunc = kindPackage.ACTIONS[channel];
 
-    if (!channel) {
+    if (!channelFunc) {
       console.warn(`Action: Unknown channel ${channel} for kind ${kind}`);
       continue;
     }
@@ -42,6 +44,6 @@ module.exports.convertAction = (automation, rule) => {
   }
 
   if (actions.length > 0) {
-    automation.action = actions;
+    return actions;
   }
 };
