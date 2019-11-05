@@ -22,7 +22,6 @@ export const TRIGGERS = {
     };
 
     for (const filter of info.filters) {
-      debugger;
       const filterExpr = filter.expr || filter;
       switch (filterExpr.operator) {
         case "==":

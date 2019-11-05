@@ -12,11 +12,14 @@ export interface ThermostatCondition extends DeviceConditionConfig {
   hvac_mode?: string;
 }
 
-export interface ThermostatAction extends DeviceActionConfig {
+export interface ThermostatTemperatureAction extends DeviceActionConfig {
   temperature?: string;
-  hvac_mode?: string;
   min_temperature?: string;
   max_temperature?: string;
+}
+
+export interface ThermostatHvacModeAction extends DeviceActionConfig {
+  hvac_mode?: string;
 }
 
 export const TRIGGERS = {
@@ -68,7 +71,7 @@ export const CONDITIONS = {
 };
 
 export const ACTIONS = {
-  set_target_temperature: (action: Action): ThermostatAction => {
+  set_target_temperature: (action: Action): ThermostatTemperatureAction => {
     const { in_params } = action.invocation;
 
     return {
@@ -77,7 +80,7 @@ export const ACTIONS = {
       temperature: getParamValue(in_params, "value")
     };
   },
-  set_minmax_temperature: (action: Action): ThermostatAction => {
+  set_minmax_temperature: (action: Action): ThermostatTemperatureAction => {
     const { in_params } = action.invocation;
     return {
       ...getDeviceActionTemplate("climate"),
@@ -86,7 +89,7 @@ export const ACTIONS = {
       max_temperature: getParamValue(in_params, "high")
     };
   },
-  set_hvac_mode: (action: Action): ThermostatAction => {
+  set_hvac_mode: (action: Action): ThermostatHvacModeAction => {
     const { in_params } = action.invocation;
     return {
       ...getDeviceActionTemplate("climate"),
