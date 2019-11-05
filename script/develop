@@ -5,4 +5,4 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-npm run watch
+npm run start
