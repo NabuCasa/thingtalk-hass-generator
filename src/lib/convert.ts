@@ -82,7 +82,7 @@ export const convertRule = async (rule: Rule) => {
     automation.trigger = [trigger];
   }
   if (condition) {
-    automation.condition = condition;
+    automation.condition = [condition];
   }
   if (action) {
     automation.action = action;
