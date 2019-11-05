@@ -3,6 +3,11 @@ import { convertCondition } from "./convert_condition";
 import { convertAction } from "./convert_action";
 import { Rule, Info } from "./rule";
 
+// Import the devices so they are added to the build
+import "./device/light-bulb";
+import "./device/thermostat";
+import "./device/org.thingpedia.builtin.thingengine.builtin";
+
 export interface AutomationConfig {
   alias?: string;
   description?: string;

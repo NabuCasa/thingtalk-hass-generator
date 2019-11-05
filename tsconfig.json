@@ -13,6 +13,5 @@
     "typeRoots": ["./types", "node_modules/@types"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", ".serverless/**/*", ".vscode/**/*", "dist", ".build"]
+  "include": ["src/**/*"]
 }
