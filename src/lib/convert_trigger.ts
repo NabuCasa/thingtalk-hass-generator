@@ -1,12 +1,18 @@
 import { getTableInfo, Rule, Info, Stream } from "./rule";
+import { DeviceConfig } from "./convert";
 
-export interface Trigger {
-  platform?: string;
-  entity_id?: string;
-  domain?: string;
-  device_id?: string;
-  type?: string;
+export interface DeviceTriggerConfig extends DeviceConfig {
+  to?: string;
 }
+
+export const getDeviceTriggerTemplate = (domain: string): DeviceTriggerConfig => {
+  return {
+    platform: "device",
+    domain: domain,
+    entity_id: "",
+    device_id: ""
+  };
+};
 
 export const convertTrigger = async (rule: Rule) => {
   // Check for a trigger
@@ -22,6 +28,7 @@ export const convertTrigger = async (rule: Rule) => {
   };
 
   while (stream) {
+    // @ts-ignore
     const type = stream.constructor.className;
 
     if (stream.filter) {
@@ -53,7 +60,7 @@ export const convertTrigger = async (rule: Rule) => {
   }
 
   // convert stream info to automation trigger
-  const kind = info.invocation.selector.kind;
+  const kind = info.invocation.selector!.kind;
   const channel = info.invocation.channel;
 
   let kindPackage;
@@ -70,7 +77,7 @@ export const convertTrigger = async (rule: Rule) => {
     return;
   }
 
-  const channelFunc = kindPackage.TRIGGERS[channel];
+  const channelFunc = kindPackage.TRIGGERS[channel!];
 
   if (!channelFunc) {
     console.warn(`Trigger: Unknown channel ${channel} for kind ${kind}`);

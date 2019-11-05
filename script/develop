@@ -5,7 +5,4 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-npm run watch &  PIDWATCH=$!
-npm run debug &  PIDDEBUG=$!
-wait $PIDWATCH
-wait $PIDDEBUG
+npm run watch

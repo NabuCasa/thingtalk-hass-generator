@@ -10,6 +10,7 @@
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": false,
+    "types": ["node"],
     "typeRoots": ["./types", "node_modules/@types"],
     "skipLibCheck": true
   },

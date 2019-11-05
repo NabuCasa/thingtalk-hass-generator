@@ -1,4 +1,16 @@
 import { Rule } from "./rule";
+import { DeviceConfig } from "./convert";
+
+export interface DeviceActionConfig extends DeviceConfig {}
+
+export const getDeviceActionTemplate = (domain: string): DeviceActionConfig => {
+  return {
+    platform: "device",
+    domain: domain,
+    entity_id: "",
+    device_id: ""
+  };
+};
 
 export const convertAction = async (rule: Rule) => {
   // Process the action
@@ -9,7 +21,7 @@ export const convertAction = async (rule: Rule) => {
   const actions: any[] = [];
 
   for (const action of rule.actions) {
-    const kind = action.invocation.selector.kind;
+    const kind = action.invocation.selector!.kind;
     const channel = action.invocation.channel;
 
     let kindPackage;
@@ -26,7 +38,7 @@ export const convertAction = async (rule: Rule) => {
       return;
     }
 
-    const channelFunc = kindPackage.ACTIONS[channel];
+    const channelFunc = kindPackage.ACTIONS[channel!];
 
     if (!channelFunc) {
       console.warn(`Action: Unknown channel ${channel} for kind ${kind}`);

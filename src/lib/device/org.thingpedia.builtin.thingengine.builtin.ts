@@ -1,36 +1,54 @@
 import { Info } from "../rule";
-import { Trigger } from "../convert_trigger";
+import { getFilterValue } from "../convert";
 
-export interface ZoneTrigger extends Trigger {
+export interface ZoneTrigger {
+  platform: "zone";
   zone?: string;
+  event?: "leave" | "enter";
+  entity_id: string;
+}
+
+export interface ZoneCondition {
+  condition: "zone";
+  zone?: string;
+  entity_id: string;
 }
 
 export const TRIGGERS = {
-  get_gps: (info: Info) => {
+  get_gps: (info: Info): ZoneTrigger => {
     const trigger: ZoneTrigger = {
       platform: "zone",
       entity_id: ""
     };
 
-    debugger;
-
     for (const filter of info.filters) {
-      // if the thinktalk includes `not` we are getting the filter in filter.expr but I don't see anywhere that it should not be this location?
+      debugger;
       const filterExpr = filter.expr || filter;
       switch (filterExpr.operator) {
         case "==":
-          trigger.zone = `zone.${filterExpr.value.value.relativeTag}`;
+          trigger.zone = `zone.${filterExpr.value!.value.relativeTag}`;
+          trigger.event = filter.isNot ? "leave" : "enter";
           break;
 
         default:
           console.warn(
             "Unknown operator for filter",
-            info.invocation!.selector.kind,
+            info.invocation!.selector!.kind,
             info.invocation!.channel,
             filterExpr
           );
       }
     }
     return trigger;
+  }
+};
+
+export const CONDITIONS = {
+  get_gps: (info: Info): ZoneCondition => {
+    return {
+      condition: "zone",
+      entity_id: "",
+      zone: `zone.${getFilterValue(info).relativeTag}`
+    };
   }
 };

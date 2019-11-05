@@ -21,9 +21,10 @@ export interface Action {
 }
 
 export interface Filter {
-  operator: string;
-  value: Value;
-  expr: Filter;
+  operator?: string;
+  value?: Value;
+  expr?: Filter;
+  isNot?: boolean;
 }
 
 export interface Value {
@@ -31,8 +32,8 @@ export interface Value {
 }
 
 export interface Invocation {
-  selector: Selector;
-  channel: string;
+  selector?: Selector;
+  channel?: string;
   in_params: any;
 }
 
