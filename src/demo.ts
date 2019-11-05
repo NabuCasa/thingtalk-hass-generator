@@ -8,7 +8,7 @@ async function printRule(rule) {
 
   console.log("Home Assistant Automation:");
   console.log();
-  console.log(haSyntax);
+  console.log(yaml.safeDump(haSyntax));
 }
 
 function printProgram(program) {
