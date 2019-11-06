@@ -15,8 +15,9 @@ export const parseUtterance = async utterance => {
     return null;
   }
 
-  console.log(response.data.candidates[0].code.join(" "));
+  console.log(response.data.candidates[0].code); // .join(" ")
   console.log(response.data.entities);
+  debugger;
   console.log();
 
   const ast = tt.NNSyntax.fromNN(response.data.candidates[0].code, response.data.entities);

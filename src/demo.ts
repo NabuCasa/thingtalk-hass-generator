@@ -6,24 +6,7 @@ import readline from "readline";
 async function printRule(rule) {
   let haSyntax: AutomationConfig = await convertRule(rule);
 
-  if (!haSyntax.trigger) {
-    // This is a script.
-
-    if (haSyntax.condition) {
-      console.warn(
-        "Creating a script. All conditions are lost because we do not yet support device conditions in scripts."
-      );
-      console.log();
-      delete haSyntax.condition;
-    }
-
-    haSyntax.script = haSyntax.action;
-    delete haSyntax.action;
-
-    console.log("Home Assistant Script:");
-  } else {
-    console.log("Home Assistant Automation:");
-  }
+  console.log("Home Assistant Automation:");
   console.log();
   console.log(yaml.safeDump(haSyntax));
 }

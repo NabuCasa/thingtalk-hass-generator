@@ -1,12 +1,16 @@
 import { getTableInfo, Rule } from "./rule";
+import { DeviceConfig } from "./convert";
 
-export interface Condition {
-  platform?: string;
-  entity_id?: string;
-  domain?: string;
-  device_id?: string;
-  type?: string;
-}
+export interface DeviceConditionConfig extends DeviceConfig {}
+
+export const getDeviceConditionTemplate = (domain: string): DeviceConditionConfig => {
+  return {
+    platform: "device",
+    domain: domain,
+    entity_id: "",
+    device_id: ""
+  };
+};
 
 export const convertCondition = async (rule: Rule) => {
   // Process the filter on the expression
@@ -21,7 +25,7 @@ export const convertCondition = async (rule: Rule) => {
     return;
   }
 
-  const kind = info.invocation.selector.kind;
+  const kind = info.invocation.selector!.kind;
   const channel = info.invocation.channel;
 
   let kindPackage;
@@ -38,7 +42,7 @@ export const convertCondition = async (rule: Rule) => {
     return;
   }
 
-  const channelFunc = kindPackage.CONDITIONS[channel];
+  const channelFunc = kindPackage.CONDITIONS[channel!];
 
   if (!channelFunc) {
     console.warn(`Condition: Unknown channel ${channel} for kind ${kind}`);

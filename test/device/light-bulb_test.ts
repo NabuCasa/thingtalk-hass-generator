@@ -1,12 +1,44 @@
 import { assert } from "chai";
-import { ACTIONS } from "../../src/lib/device/light-bulb";
+import { ACTIONS, TRIGGERS } from "../../src/lib/device/light-bulb";
 
 describe("Light Bulb triggers", () => {
   it("should handle an ON trigger", () => {
-    assert.fail();
+    const trigger = TRIGGERS.power({
+      filters: [
+        {
+          operator: "==",
+          value: {
+            value: "on"
+          }
+        }
+      ]
+    });
+    assert.deepEqual(trigger, {
+      platform: "device",
+      domain: "light",
+      type: "turned_on",
+      entity_id: "",
+      device_id: ""
+    });
   });
   it("should handle an OFF trigger", () => {
-    assert.fail();
+    const trigger = TRIGGERS.power({
+      filters: [
+        {
+          operator: "==",
+          value: {
+            value: "off"
+          }
+        }
+      ]
+    });
+    assert.deepEqual(trigger, {
+      platform: "device",
+      domain: "light",
+      type: "turned_off",
+      entity_id: "",
+      device_id: ""
+    });
   });
 });
 
@@ -28,7 +60,8 @@ describe("Light Bulb actions", () => {
       platform: "device",
       domain: "light",
       type: "turn_on",
-      entity_id: ""
+      entity_id: "",
+      device_id: ""
     });
   });
   it("should handle an OFF action", () => {
@@ -48,7 +81,8 @@ describe("Light Bulb actions", () => {
       platform: "device",
       domain: "light",
       type: "turn_off",
-      entity_id: ""
+      entity_id: "",
+      device_id: ""
     });
   });
 });
