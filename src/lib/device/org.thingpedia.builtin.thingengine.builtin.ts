@@ -1,5 +1,6 @@
 import { Info } from "../rule";
 import { getFilterValue } from "../convert";
+import { addWarning, Context } from "../context";
 
 export interface ZoneTrigger {
   platform: "zone";
@@ -15,7 +16,7 @@ export interface ZoneCondition {
 }
 
 export const TRIGGERS = {
-  get_gps: (info: Info): ZoneTrigger => {
+  get_gps: (info: Info, context: Context): ZoneTrigger => {
     const trigger: ZoneTrigger = {
       platform: "zone",
       entity_id: ""
@@ -30,12 +31,13 @@ export const TRIGGERS = {
           break;
 
         default:
-          console.warn(
-            "Unknown operator for filter",
-            info.invocation!.selector!.kind,
-            info.invocation!.channel,
-            filterExpr
-          );
+          addWarning(context, {
+            part: "trigger",
+            warning: "unknown operator for filter",
+            kind: info.invocation!.selector!.kind,
+            channel: info.invocation!.channel,
+            value: filterExpr.toJSON
+          });
       }
     }
     return trigger;
@@ -43,11 +45,11 @@ export const TRIGGERS = {
 };
 
 export const CONDITIONS = {
-  get_gps: (info: Info): ZoneCondition => {
+  get_gps: (info: Info, context: Context): ZoneCondition => {
     return {
       condition: "zone",
       entity_id: "",
-      zone: `zone.${getFilterValue(info).relativeTag}`
+      zone: `zone.${getFilterValue(info, context).relativeTag}`
     };
   }
 };

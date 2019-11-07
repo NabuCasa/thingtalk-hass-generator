@@ -2,6 +2,7 @@ import { convertTrigger } from "./convert_trigger";
 import { convertCondition } from "./convert_condition";
 import { convertAction } from "./convert_action";
 import { Rule, Info } from "./rule";
+import { Context, addWarning } from "./context";
 
 export interface AutomationConfig {
   alias?: string;
@@ -9,7 +10,6 @@ export interface AutomationConfig {
   trigger?: any[];
   condition?: any[];
   action?: any[];
-  script?: any[];
 }
 
 export interface DeviceConfig {
@@ -22,7 +22,7 @@ export interface DeviceConfig {
   below?: string | number;
 }
 
-export const getFilterRangeConfig = (config: DeviceConfig, info: Info) => {
+export const getFilterRangeConfig = (config: DeviceConfig, info: Info, context: Context) => {
   for (const filter of info.filters) {
     switch (filter.operator) {
       case ">=":
@@ -39,18 +39,19 @@ export const getFilterRangeConfig = (config: DeviceConfig, info: Info) => {
         break;
 
       default:
-        console.warn(
-          "Unknown operator for filter",
-          info.invocation!.selector!.kind,
-          info.invocation!.channel,
-          filter
-        );
+        addWarning(context, {
+          part: info.part!,
+          warning: "unknown operator for filter",
+          kind: info.invocation!.selector!.kind,
+          channel: info.invocation!.channel,
+          value: filter.toJSON
+        });
     }
   }
   return config;
 };
 
-export const getFilterValue = (info: Info) => {
+export const getFilterValue = (info: Info, context: Context) => {
   let value;
   for (const filter of info.filters) {
     const filterExpr = filter.expr || filter;
@@ -60,23 +61,24 @@ export const getFilterValue = (info: Info) => {
         break;
 
       default:
-        console.warn(
-          "Unknown operator for filter",
-          info.invocation!.selector!.kind,
-          info.invocation!.channel,
-          filterExpr
-        );
+        addWarning(context, {
+          part: info.part!,
+          warning: "unknown operator for filter",
+          kind: info.invocation!.selector!.kind,
+          channel: info.invocation!.channel,
+          value: filterExpr.toJSON
+        });
     }
   }
   return value;
 };
 
-export const convertRule = async (rule: Rule) => {
+export const convertRule = async (rule: Rule, context: Context = {}) => {
   const automation: AutomationConfig = {};
 
-  const trigger = await convertTrigger(rule);
-  const condition = await convertCondition(rule);
-  const action = await convertAction(rule);
+  const trigger = await convertTrigger(rule, context);
+  const condition = await convertCondition(rule, context);
+  const action = await convertAction(rule, context);
 
   if (trigger) {
     automation.trigger = [trigger];
@@ -88,5 +90,5 @@ export const convertRule = async (rule: Rule) => {
     automation.action = action;
   }
 
-  return automation;
+  return { automation, context };
 };

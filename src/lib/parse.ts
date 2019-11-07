@@ -1,28 +1,45 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import tt from "thingtalk";
 import { schemaRetriever } from "./schema_retriever";
+import { Context } from "vm";
+import { addError } from "./context";
 
-export const parseUtterance = async utterance => {
-  const response = await axios.get(`https://almond-nl.stanford.edu/en-US/query`, {
-    params: {
-      q: utterance,
-      thingtalk_version: "1.8.0"
-    }
-  });
-
-  if (response.data.candidates.length === 0) {
-    console.error("Unable to parse utterance!");
-    return null;
+export const parseUtterance = async (utterance: string, context: Context = {}) => {
+  let response: AxiosResponse<any>;
+  try {
+    response = await axios.get(`https://almond-nl.stanford.edu/en-US/query`, {
+      params: {
+        q: utterance,
+        thingtalk_version: tt.version
+      }
+    });
+  } catch (err) {
+    addError(context, err);
+    throw new Error("Error while processing NLP");
   }
 
-  console.log(response.data.candidates[0].code); // .join(" ")
-  console.log(response.data.entities);
-  debugger;
-  console.log();
+  if (response.data.candidates.length === 0) {
+    throw new Error("Unable to parse utterance");
+  }
 
-  const ast = tt.NNSyntax.fromNN(response.data.candidates[0].code, response.data.entities);
+  context.utterance = utterance;
+  context.thingtalk = {
+    code: response.data.candidates[0].code,
+    entities: response.data.entities
+  };
 
-  await ast.typecheck(schemaRetriever);
+  let program;
+  try {
+    program = tt.NNSyntax.fromNN(response.data.candidates[0].code, response.data.entities);
+  } catch (err) {
+    console.log("error creating program", err);
+  }
 
-  return ast;
+  try {
+    await program.typecheck(schemaRetriever);
+  } catch (err) {
+    console.log("error typecheck program", err);
+  }
+
+  return { program, context };
 };

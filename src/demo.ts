@@ -1,20 +1,34 @@
 import yaml from "js-yaml";
 import { parseUtterance } from "./lib/parse";
-import { convertRule, AutomationConfig } from "./lib/convert";
+import { convertRule } from "./lib/convert";
 import readline from "readline";
+import { Context } from "./lib/context";
 
-async function printRule(rule) {
-  let haSyntax: AutomationConfig = await convertRule(rule);
+async function printRule(rule, context: Context) {
+  const result = await convertRule(rule, context);
+  const automation = result.automation;
 
+  printContext(context);
+
+  if (!Object.keys(automation).length) {
+    console.log("We could not create a Home Assistant Automation");
+    return;
+  }
   console.log("Home Assistant Automation:");
   console.log();
-  console.log(yaml.safeDump(haSyntax));
+  console.log(yaml.safeDump(automation));
 }
 
-function printProgram(program) {
+function printContext(context: Context) {
+  console.log("Context:");
+  console.log();
+  console.log(context);
+}
+
+function printProgram(program, context: Context) {
   debugger;
   for (const rule of program.rules) {
-    printRule(rule);
+    printRule(rule, context);
   }
 }
 
@@ -34,14 +48,20 @@ async function main() {
       }
 
       console.log();
-      const ast = await parseUtterance(utterance);
-
-      if (ast == null) {
+      let program;
+      const context: Context = {};
+      try {
+        const result = await parseUtterance(utterance, context);
+        program = result.program;
+      } catch (error) {
+        console.error(error.message);
+        console.log();
+        printContext(context);
         linereader.close();
         return;
       }
 
-      printProgram(ast);
+      printProgram(program, context);
       console.log();
       setTimeout(ask, 0);
     });

@@ -80,6 +80,8 @@ class @org.thingpedia.builtin.thingengine.phone {
 
   action call_emergency();
 
+  action put_string(in req str: String);
+
   action send_sms(in req to: Entity(tt:phone_number),
                   in req message: String);
 
@@ -226,34 +228,6 @@ class @com.xkcd {
                                  out link: Entity(tt:url),
                                  out updated_time: Date);
 }
-class @com.uber {
-  monitorable query current(out status: String,
-                            out vehicle: String,
-                            out vehicle_picture: Entity(tt:picture),
-                            out driver: String,
-                            out driver_picture: Entity(tt:picture),
-                            out eta: Measure(ms),
-                            out from: Location,
-                            out to: Location);
-
-  monitorable list query price_estimate(in req start: Location,
-                                        in req end: Location,
-                                        out uber_type: Enum(pool,uber_x,uber_xl,uber_black,select,suv,assist),
-                                        out low_estimate: Currency,
-                                        out high_estimate: Currency,
-                                        out surge: Number,
-                                        out duration: Measure(ms),
-                                        out distance: Measure(m));
-
-  monitorable list query time_estimate(in req start: Location,
-                                       out uber_type: Enum(pool,uber_x,uber_xl,uber_black,select,suv,assist),
-                                       out estimate: Measure(ms));
-
-  action request(in req start: Location,
-                 in req end: Location,
-                 in req uber_type: Enum(pool,uber_x,uber_xl,uber_black,select,suv,assist),
-                 in opt seat_count: Number);
-}
 class @com.yandex.translate {
   query detect_language(in req text: String,
                         out value: Entity(tt:iso_lang_code));
@@ -312,6 +286,16 @@ class @org.thingpedia.weather {
                             out status: Enum(raining,cloudy,sunny,snowy,sleety,drizzling,windy),
                             out icon: Entity(tt:picture));
 
+  monitorable query forecast(in req location: Location,
+                             out date: Date,
+                             out temperature: Measure(C),
+                             out wind_speed: Measure(mps),
+                             out humidity: Number,
+                             out cloudiness: Number,
+                             out fog: Number,
+                             out status: Enum(raining,cloudy,sunny,snowy,sleety,drizzling,windy),
+                             out icon: Entity(tt:picture));
+
   monitorable query moon(in req location: Location,
                          in opt date: Date,
                          out phase: Enum(new_moon,waxing_crescent,first_quarter,waxing_gibbous,full_moon,waning_gibbous,third_quarter,waning_crescent));
@@ -319,7 +303,9 @@ class @org.thingpedia.weather {
   monitorable query sunrise(in req location: Location,
                             in opt date: Date,
                             out sunrise_time: Time,
-                            out sunset_time: Time);
+                            out sunset_time: Time,
+                            out sunset: Boolean,
+                            out sunrisen: Boolean);
 }
 class @com.instagram {
   monitorable query get_pictures(in opt count: Number,
@@ -345,8 +331,8 @@ class @org.thingpedia.builtin.thingengine.builtin {
                             out bearing: Number,
                             out speed: Measure(mps));
 
-  query get_random_between(in req low: Number,
-                           in req high: Number,
+  query get_random_between(in opt low: Number,
+                           in opt high: Number,
                            out random: Number);
 
   query get_time(out time: Date);
@@ -613,6 +599,7 @@ class @com.forismatic.quotes {
 }
 class @com.steampowered {
   monitorable query get_price(in req game_name: String,
+                              in opt country: Entity(tt:country),
                               out price: Number);
 
   query get_steam_id(in req name: String,
@@ -622,11 +609,6 @@ class @com.google.contacts {
   monitorable list query get_contacts(out name: String,
                                       out email: Entity(tt:email_address),
                                       out phone_number: Entity(tt:phone_number));
-}
-class @org.upcdatabase {
-  monitorable query get(in req query: String,
-                        out product: String,
-                        out upc: String);
 }
 class @com.wunderlist {
   list query get_lists(out id: Number,
@@ -820,12 +802,6 @@ class @org.arxiv {
                                out link: Entity(tt:url),
                                out summary: String);
 }
-class @com.fortnitetracker {
-  monitorable query get(in req user_id: String,
-                        out rating: Number,
-                        out kd: Number,
-                        out winRatio: Number);
-}
 class @com.arstechnica {
   monitorable list query index(out title: String,
                                out link: Entity(tt:url),
@@ -852,12 +828,6 @@ class @com.huffingtonpost {
                                    out link: Entity(tt:url),
                                    out updated: Date,
                                    out description: String);
-}
-class @com.nba {
-  monitorable list query news(out title: String,
-                              out link: Entity(tt:url),
-                              out updated: Date,
-                              out description: String);
 }
 class @org.sup {
   monitorable list query new_books(out title: String,
@@ -1085,9 +1055,6 @@ class @com.wikicfp {
 }
 class @rest.kanye {
   query get(out text: String);
-}
-class @edu.stanford.cs294s {
-  monitorable list query slides(out link: Entity(tt:url));
 }
 class @org.acm {
   monitorable list query cacm(out title: String,
