@@ -892,7 +892,7 @@ thingpedia@^2.6.0-alpha.2:
     tmp "^0.1.0"
     xml2js "^0.4.17"
 
-thingtalk@^1.9.0-alpha.4, thingtalk@~1.9.0-alpha.1:
+thingtalk@^1.9.0-beta.1, thingtalk@~1.9.0-alpha.1:
   version "1.9.0-beta.1"
   resolved "https://registry.yarnpkg.com/thingtalk/-/thingtalk-1.9.0-beta.1.tgz#f7d5fbd457f199814cf33cb8732f51640a39b2ab"
   integrity sha512-1idMnmj7ecyfNPjpr/5JDTdwnMsfevGDp8smXac/z4SKUvlgUa4W60AnyKN4aKxMmnm2nvkteWrs+EupnYrOww==

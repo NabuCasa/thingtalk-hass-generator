@@ -1,3 +1,5 @@
+import { Part, addWarning, Context } from "./context";
+
 export interface Table {
   filter: Filter;
   invocation: Invocation;
@@ -18,6 +20,7 @@ export interface Stream {
 
 export interface Action {
   invocation: Invocation;
+  part: Part;
 }
 
 export interface Filter {
@@ -25,6 +28,7 @@ export interface Filter {
   value?: Value;
   expr?: Filter;
   isNot?: boolean;
+  toJSON: () => { [key: string]: any };
 }
 
 export interface Value {
@@ -44,14 +48,22 @@ export interface Selector {
 export interface Info {
   filters: Filter[];
   invocation?: Invocation;
+  part?: Part;
 }
 
-export const getParamValue = (in_params, name: string) => {
+export const getParamValue = (in_params, name: string, info: Info | Action, context: Context) => {
   for (const param of in_params) {
     if (param.name === name) {
       return param.value.value;
     }
   }
+  addWarning(context, {
+    part: info.part!,
+    warning: "parameter not found",
+    kind: info.invocation!.selector!.kind,
+    channel: info.invocation!.channel,
+    value: { in_params, name }
+  });
 };
 
 export const getTableInfo = (table: Table | undefined) => {

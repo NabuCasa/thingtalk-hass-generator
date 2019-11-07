@@ -1,18 +1,18 @@
 import { Rule } from "./rule";
 import { DeviceConfig } from "./convert";
+import { addWarning, Context } from "./context";
 
 export interface DeviceActionConfig extends DeviceConfig {}
 
 export const getDeviceActionTemplate = (domain: string): DeviceActionConfig => {
   return {
-    platform: "device",
-    domain: domain,
+    domain,
     entity_id: "",
     device_id: ""
   };
 };
 
-export const convertAction = async (rule: Rule) => {
+export const convertAction = async (rule: Rule, context: Context) => {
   // Process the action
   if (!rule.actions) {
     return;
@@ -23,29 +23,35 @@ export const convertAction = async (rule: Rule) => {
   for (const action of rule.actions) {
     const kind = action.invocation.selector!.kind;
     const channel = action.invocation.channel;
+    action.part = "condition";
 
     let kindPackage;
 
     try {
       kindPackage = await import(`./device/${kind}`);
     } catch (err) {
-      console.warn(`Action: Unknown kind ${kind}`);
+      addWarning(context, { part: "action", warning: "unknown kind", kind });
       continue;
     }
 
     if (!kindPackage.ACTIONS) {
-      console.warn(`Action: Unsupported kind ${kind}`);
+      addWarning(context, { part: "action", warning: "part not supported", kind });
       return;
     }
 
     const channelFunc = kindPackage.ACTIONS[channel!];
 
     if (!channelFunc) {
-      console.warn(`Action: Unknown channel ${channel} for kind ${kind}`);
+      addWarning(context, {
+        part: "action",
+        warning: "unknown channel",
+        kind,
+        channel
+      });
       continue;
     }
 
-    const automationAction = channelFunc(action);
+    const automationAction = channelFunc(action, context);
 
     if (!automationAction) {
       // Assume trigger already warned.

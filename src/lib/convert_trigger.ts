@@ -1,20 +1,22 @@
 import { getTableInfo, Rule, Info, Stream } from "./rule";
-import { DeviceConfig } from "./convert";
+import { DeviceConfig, DeviceRangeConfig } from "./convert";
+import { Context, addWarning } from "./context";
 
-export interface DeviceTriggerConfig extends DeviceConfig {
+export interface DeviceTriggerConfig extends DeviceRangeConfig {
+  platform: "device";
   to?: string;
 }
 
 export const getDeviceTriggerTemplate = (domain: string): DeviceTriggerConfig => {
   return {
     platform: "device",
-    domain: domain,
+    domain,
     entity_id: "",
     device_id: ""
   };
 };
 
-export const convertTrigger = async (rule: Rule) => {
+export const convertTrigger = async (rule: Rule, context: Context) => {
   // Check for a trigger
   if (!rule.stream) {
     return;
@@ -26,6 +28,8 @@ export const convertTrigger = async (rule: Rule) => {
   const info: Info = {
     filters: []
   };
+
+  info.part = "trigger";
 
   while (stream) {
     // @ts-ignore
@@ -49,7 +53,7 @@ export const convertTrigger = async (rule: Rule) => {
         break;
 
       default:
-        console.warn("Unknown type", type);
+        addWarning(context, { part: "trigger", warning: "unknown type", type });
     }
 
     stream = stream.stream;
@@ -68,23 +72,28 @@ export const convertTrigger = async (rule: Rule) => {
   try {
     kindPackage = await import(`./device/${kind}`);
   } catch (err) {
-    console.warn(`Trigger: Unknown kind ${kind}`);
+    addWarning(context, { part: "trigger", warning: "unknown kind", kind });
     return;
   }
 
   if (!kindPackage.TRIGGERS) {
-    console.warn(`Trigger: Unsupported kind ${kind}`);
+    addWarning(context, { part: "trigger", warning: "part not supported", kind });
     return;
   }
 
   const channelFunc = kindPackage.TRIGGERS[channel!];
 
   if (!channelFunc) {
-    console.warn(`Trigger: Unknown channel ${channel} for kind ${kind}`);
+    addWarning(context, {
+      part: "trigger",
+      warning: "unknown channel",
+      kind,
+      channel
+    });
     return;
   }
 
-  const trigger = channelFunc(info);
+  const trigger = channelFunc(info, context);
 
   if (!trigger) {
     // Assume trigger already warned.

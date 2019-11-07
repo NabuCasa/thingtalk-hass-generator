@@ -1,18 +1,21 @@
 import { getTableInfo, Rule } from "./rule";
-import { DeviceConfig } from "./convert";
+import { DeviceConfig, DeviceRangeConfig } from "./convert";
+import { Context, addWarning } from "./context";
 
-export interface DeviceConditionConfig extends DeviceConfig {}
+export interface DeviceConditionConfig extends DeviceRangeConfig {
+  condition: string;
+}
 
 export const getDeviceConditionTemplate = (domain: string): DeviceConditionConfig => {
   return {
-    platform: "device",
-    domain: domain,
+    condition: "device",
+    domain,
     entity_id: "",
     device_id: ""
   };
 };
 
-export const convertCondition = async (rule: Rule) => {
+export const convertCondition = async (rule: Rule, context: Context) => {
   // Process the filter on the expression
   // This becomes the condition.
   if (!rule.table) {
@@ -20,6 +23,7 @@ export const convertCondition = async (rule: Rule) => {
   }
 
   const info = getTableInfo(rule.table);
+  info.part = "condition";
 
   if (!info.invocation) {
     return;
@@ -33,23 +37,28 @@ export const convertCondition = async (rule: Rule) => {
   try {
     kindPackage = await import(`./device/${kind}`);
   } catch (err) {
-    console.warn(`Condition: Unknown kind ${kind}`);
+    addWarning(context, { part: "condition", warning: "unknown kind", kind });
     return;
   }
 
   if (!kindPackage.CONDITIONS) {
-    console.warn(`Condition: Unsupported kind ${kind}`);
+    addWarning(context, { part: "condition", warning: "part not supported", kind });
     return;
   }
 
   const channelFunc = kindPackage.CONDITIONS[channel!];
 
   if (!channelFunc) {
-    console.warn(`Condition: Unknown channel ${channel} for kind ${kind}`);
+    addWarning(context, {
+      part: "condition",
+      warning: "unknown channel",
+      kind,
+      channel
+    });
     return;
   }
 
-  const condition = channelFunc(info);
+  const condition = channelFunc(info, context);
 
   if (!condition) {
     // Assume condition already warned.
