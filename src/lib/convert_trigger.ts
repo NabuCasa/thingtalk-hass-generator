@@ -1,15 +1,16 @@
 import { getTableInfo, Rule, Info, Stream } from "./rule";
-import { DeviceConfig } from "./convert";
+import { DeviceConfig, DeviceRangeConfig } from "./convert";
 import { Context, addWarning } from "./context";
 
-export interface DeviceTriggerConfig extends DeviceConfig {
+export interface DeviceTriggerConfig extends DeviceRangeConfig {
+  platform: "device";
   to?: string;
 }
 
 export const getDeviceTriggerTemplate = (domain: string): DeviceTriggerConfig => {
   return {
     platform: "device",
-    domain: domain,
+    domain,
     entity_id: "",
     device_id: ""
   };

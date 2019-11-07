@@ -7,8 +7,6 @@ import { getDeviceActionTemplate, DeviceActionConfig } from "../convert_action";
 import { getFilterRangeConfig, getFilterValue } from "../convert";
 import { Context } from "../context";
 
-export interface ThermostatTrigger extends DeviceTriggerConfig {}
-
 export interface ThermostatCondition extends DeviceConditionConfig {
   hvac_mode?: string;
 }
@@ -24,21 +22,21 @@ export interface ThermostatHvacModeAction extends DeviceActionConfig {
 }
 
 export const TRIGGERS = {
-  get_temperature: (info: Info, context: Context): ThermostatTrigger => {
-    const trigger: ThermostatTrigger = {
+  get_temperature: (info: Info, context: Context): DeviceTriggerConfig => {
+    const trigger: DeviceTriggerConfig = {
       ...getDeviceTriggerTemplate("climate"),
       type: "current_temperature_changed"
     };
-    return getFilterRangeConfig(trigger, info, context);
+    return getFilterRangeConfig(trigger, info, context) as DeviceTriggerConfig;
   },
-  get_humidity: (info: Info, context: Context): ThermostatTrigger => {
-    const trigger: ThermostatTrigger = {
+  get_humidity: (info: Info, context: Context): DeviceTriggerConfig => {
+    const trigger: DeviceTriggerConfig = {
       ...getDeviceTriggerTemplate("climate"),
       type: "current_humidity_changed"
     };
-    return getFilterRangeConfig(trigger, info, context);
+    return getFilterRangeConfig(trigger, info, context) as DeviceTriggerConfig;
   },
-  get_hvac_state: (info: Info, context: Context): ThermostatTrigger => {
+  get_hvac_state: (info: Info, context: Context): DeviceTriggerConfig => {
     return {
       ...getDeviceTriggerTemplate("climate"),
       type: "hvac_mode_changed",
@@ -53,14 +51,14 @@ export const CONDITIONS = {
       ...getDeviceConditionTemplate("climate"),
       type: "is_current_temperature"
     };
-    return getFilterRangeConfig(condition, info, context) as ThermostatCondition;
+    return getFilterRangeConfig(condition, info, context);
   },
   get_humidity: (info: Info, context: Context): ThermostatCondition => {
     const condition: ThermostatCondition = {
       ...getDeviceConditionTemplate("climate"),
       type: "is_current_humidity"
     };
-    return getFilterRangeConfig(condition, info, context) as ThermostatCondition;
+    return getFilterRangeConfig(condition, info, context);
   },
   get_hvac_state: (info: Info, context: Context): ThermostatCondition => {
     return {

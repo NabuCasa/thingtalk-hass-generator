@@ -1,15 +1,15 @@
 import { getTableInfo, Rule } from "./rule";
-import { DeviceConfig } from "./convert";
+import { DeviceConfig, DeviceRangeConfig } from "./convert";
 import { Context, addWarning } from "./context";
 
-export interface DeviceConditionConfig extends DeviceConfig {
+export interface DeviceConditionConfig extends DeviceRangeConfig {
   condition: string;
 }
 
 export const getDeviceConditionTemplate = (domain: string): DeviceConditionConfig => {
   return {
     condition: "device",
-    domain: domain,
+    domain,
     entity_id: "",
     device_id: ""
   };

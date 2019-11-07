@@ -1,5 +1,5 @@
-import { convertTrigger } from "./convert_trigger";
-import { convertCondition } from "./convert_condition";
+import { convertTrigger, DeviceTriggerConfig } from "./convert_trigger";
+import { convertCondition, DeviceConditionConfig } from "./convert_condition";
 import { convertAction } from "./convert_action";
 import { Rule, Info } from "./rule";
 import { Context, addWarning } from "./context";
@@ -13,16 +13,22 @@ export interface AutomationConfig {
 }
 
 export interface DeviceConfig {
-  platform?: string;
   entity_id?: string;
   domain?: string;
   device_id?: string;
   type?: string;
+}
+
+export interface DeviceRangeConfig extends DeviceConfig {
   above?: string | number;
   below?: string | number;
 }
 
-export const getFilterRangeConfig = (config: DeviceConfig, info: Info, context: Context) => {
+export const getFilterRangeConfig = <T extends DeviceRangeConfig>(
+  config: T,
+  info: Info,
+  context: Context
+): T => {
   for (const filter of info.filters) {
     switch (filter.operator) {
       case ">=":

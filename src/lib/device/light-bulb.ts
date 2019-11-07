@@ -2,7 +2,7 @@ import { getParamValue, Action, Info } from "../rule";
 import { getDeviceTriggerTemplate, DeviceTriggerConfig } from "../convert_trigger";
 import { getDeviceActionTemplate } from "../convert_action";
 import { getFilterValue } from "../convert";
-import { getDeviceConditionTemplate } from "../convert_condition";
+import { getDeviceConditionTemplate, DeviceConditionConfig } from "../convert_condition";
 import { Context } from "../context";
 
 export interface LightTrigger extends DeviceTriggerConfig {
@@ -17,8 +17,8 @@ export const TRIGGERS = {
 };
 
 export const CONDITIONS = {
-  power: (info: Info, context: Context): LightTrigger => {
-    const condition: LightTrigger = getDeviceConditionTemplate("light");
+  power: (info: Info, context: Context): DeviceConditionConfig => {
+    const condition: DeviceConditionConfig = getDeviceConditionTemplate("light");
     return { ...condition, type: `turned_${getFilterValue(info, context)}` };
   }
 };

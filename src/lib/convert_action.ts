@@ -6,8 +6,7 @@ export interface DeviceActionConfig extends DeviceConfig {}
 
 export const getDeviceActionTemplate = (domain: string): DeviceActionConfig => {
   return {
-    platform: "device",
-    domain: domain,
+    domain,
     entity_id: "",
     device_id: ""
   };
