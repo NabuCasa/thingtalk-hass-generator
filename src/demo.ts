@@ -51,8 +51,7 @@ async function main() {
       let program;
       const context: Context = {};
       try {
-        const result = await parseUtterance(utterance, context);
-        program = result.program;
+        program = await parseUtterance(utterance, context);
       } catch (error) {
         console.error(error.message);
         console.log();

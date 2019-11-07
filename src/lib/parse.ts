@@ -41,5 +41,5 @@ export const parseUtterance = async (utterance: string, context: Context = {}) =
     console.log("error typecheck program", err);
   }
 
-  return { program, context };
+  return program;
 };
