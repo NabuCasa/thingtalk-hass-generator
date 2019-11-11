@@ -7,6 +7,7 @@ import { Context } from "./lib/context";
 async function printRule(rule, context: Context) {
   const result = await convertRule(rule, context);
   const automation = result.automation;
+  const placeholders = result.placeholders;
 
   printContext(context);
 
@@ -17,6 +18,10 @@ async function printRule(rule, context: Context) {
   console.log("Home Assistant Automation:");
   console.log();
   console.log(yaml.safeDump(automation));
+
+  console.log("Placeholders:");
+  console.log();
+  console.log(yaml.safeDump(placeholders));
 }
 
 function printContext(context: Context) {

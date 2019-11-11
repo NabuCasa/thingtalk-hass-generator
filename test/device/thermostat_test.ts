@@ -3,17 +3,20 @@ import { CONDITIONS, ACTIONS, TRIGGERS } from "../../src/lib/device/thermostat";
 
 describe("Thermostat trigger", () => {
   it("should handle temperature change", () => {
-    const trigger = TRIGGERS.get_temperature({
-      filters: [
-        {
-          operator: ">=",
-          value: {
-            value: "20"
+    const trigger = TRIGGERS.get_temperature(
+      {
+        filters: [
+          {
+            operator: ">=",
+            value: {
+              value: "20"
+            }
           }
-        }
-      ]
-    });
-    assert.deepEqual(trigger, {
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(trigger.automation, {
       platform: "device",
       domain: "climate",
       type: "current_temperature_changed",
@@ -23,17 +26,20 @@ describe("Thermostat trigger", () => {
     });
   });
   it("should handle humidity change", () => {
-    const trigger = TRIGGERS.get_humidity({
-      filters: [
-        {
-          operator: "<=",
-          value: {
-            value: "20"
+    const trigger = TRIGGERS.get_humidity(
+      {
+        filters: [
+          {
+            operator: "<=",
+            value: {
+              value: "20"
+            }
           }
-        }
-      ]
-    });
-    assert.deepEqual(trigger, {
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(trigger.automation, {
       platform: "device",
       domain: "climate",
       type: "current_humidity_changed",
@@ -43,17 +49,20 @@ describe("Thermostat trigger", () => {
     });
   });
   it("should handle HVAC mode change", () => {
-    const trigger = TRIGGERS.get_hvac_state({
-      filters: [
-        {
-          operator: "==",
-          value: {
-            value: "heat"
+    const trigger = TRIGGERS.get_hvac_state(
+      {
+        filters: [
+          {
+            operator: "==",
+            value: {
+              value: "heat"
+            }
           }
-        }
-      ]
-    });
-    assert.deepEqual(trigger, {
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(trigger.automation, {
       platform: "device",
       domain: "climate",
       type: "hvac_mode_changed",
@@ -66,18 +75,21 @@ describe("Thermostat trigger", () => {
 
 describe("Thermostat conditions", () => {
   it("should handle temperature check", () => {
-    const condition = CONDITIONS.get_temperature({
-      filters: [
-        {
-          operator: ">=",
-          value: {
-            value: "20"
+    const condition = CONDITIONS.get_temperature(
+      {
+        filters: [
+          {
+            operator: ">=",
+            value: {
+              value: "20"
+            }
           }
-        }
-      ]
-    });
-    assert.deepEqual(condition, {
-      platform: "device",
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(condition.automation, {
+      condition: "device",
       domain: "climate",
       type: "is_current_temperature",
       above: "20",
@@ -86,18 +98,21 @@ describe("Thermostat conditions", () => {
     });
   });
   it("should handle humidity check", () => {
-    const condition = CONDITIONS.get_humidity({
-      filters: [
-        {
-          operator: "<=",
-          value: {
-            value: "20"
+    const condition = CONDITIONS.get_humidity(
+      {
+        filters: [
+          {
+            operator: "<=",
+            value: {
+              value: "20"
+            }
           }
-        }
-      ]
-    });
-    assert.deepEqual(condition, {
-      platform: "device",
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(condition.automation, {
+      condition: "device",
       domain: "climate",
       type: "is_current_humidity",
       below: "20",
@@ -106,18 +121,21 @@ describe("Thermostat conditions", () => {
     });
   });
   it("should handle HVAC state check", () => {
-    const condition = CONDITIONS.get_hvac_state({
-      filters: [
-        {
-          operator: "==",
-          value: {
-            value: "cool"
+    const condition = CONDITIONS.get_hvac_state(
+      {
+        filters: [
+          {
+            operator: "==",
+            value: {
+              value: "cool"
+            }
           }
-        }
-      ]
-    });
-    assert.deepEqual(condition, {
-      platform: "device",
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(condition.automation, {
+      condition: "device",
       domain: "climate",
       type: "is_hvac_mode",
       hvac_mode: "cool",
@@ -129,20 +147,22 @@ describe("Thermostat conditions", () => {
 
 describe("Thermostat actions", () => {
   it("should handle changing HVAC mode", () => {
-    const action = ACTIONS.set_hvac_mode({
-      invocation: {
-        in_params: [
-          {
-            name: "mode",
-            value: {
-              value: "cool"
+    const action = ACTIONS.set_hvac_mode(
+      {
+        invocation: {
+          in_params: [
+            {
+              name: "mode",
+              value: {
+                value: "cool"
+              }
             }
-          }
-        ]
-      }
-    });
-    assert.deepEqual(action, {
-      platform: "device",
+          ]
+        }
+      },
+      {}
+    );
+    assert.deepEqual(action.automation, {
       domain: "climate",
       type: "set_hvac_mode",
       hvac_mode: "cool",
@@ -151,20 +171,22 @@ describe("Thermostat actions", () => {
     });
   });
   it("should handle changing target temperature", () => {
-    const action = ACTIONS.set_target_temperature({
-      invocation: {
-        in_params: [
-          {
-            name: "value",
-            value: {
-              value: "15"
+    const action = ACTIONS.set_target_temperature(
+      {
+        invocation: {
+          in_params: [
+            {
+              name: "value",
+              value: {
+                value: "15"
+              }
             }
-          }
-        ]
-      }
-    });
-    assert.deepEqual(action, {
-      platform: "device",
+          ]
+        }
+      },
+      {}
+    );
+    assert.deepEqual(action.automation, {
       domain: "climate",
       type: "set_target_temperature",
       temperature: "15",
@@ -174,26 +196,28 @@ describe("Thermostat actions", () => {
   });
 
   it("should handle changing target temperature range", () => {
-    const action = ACTIONS.set_minmax_temperature({
-      invocation: {
-        in_params: [
-          {
-            name: "low",
-            value: {
-              value: "15"
+    const action = ACTIONS.set_minmax_temperature(
+      {
+        invocation: {
+          in_params: [
+            {
+              name: "low",
+              value: {
+                value: "15"
+              }
+            },
+            {
+              name: "high",
+              value: {
+                value: "20"
+              }
             }
-          },
-          {
-            name: "high",
-            value: {
-              value: "20"
-            }
-          }
-        ]
-      }
-    });
-    assert.deepEqual(action, {
-      platform: "device",
+          ]
+        }
+      },
+      {}
+    );
+    assert.deepEqual(action.automation, {
       domain: "climate",
       type: "set_target_temperature",
       min_temperature: "15",

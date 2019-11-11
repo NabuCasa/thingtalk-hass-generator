@@ -100,5 +100,5 @@ export const convertTrigger = async (rule: Rule, context: Context) => {
     return;
   }
 
-  return trigger;
+  return { automation: trigger.automation, placeholders: trigger.placeholders };
 };

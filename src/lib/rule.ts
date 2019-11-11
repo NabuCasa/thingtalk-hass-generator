@@ -20,7 +20,7 @@ export interface Stream {
 
 export interface Action {
   invocation: Invocation;
-  part: Part;
+  part?: Part;
 }
 
 export interface Filter {
@@ -28,7 +28,7 @@ export interface Filter {
   value?: Value;
   expr?: Filter;
   isNot?: boolean;
-  toJSON: () => { [key: string]: any };
+  toJSON?: () => { [key: string]: any };
 }
 
 export interface Value {

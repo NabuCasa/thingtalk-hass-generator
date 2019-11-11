@@ -12,6 +12,12 @@ export interface AutomationConfig {
   action?: any[];
 }
 
+export interface AutomationPlaceholders {
+  trigger?: any[];
+  condition?: any[];
+  action?: any[];
+}
+
 export interface DeviceConfig {
   entity_id?: string;
   domain?: string;
@@ -23,6 +29,27 @@ export interface DeviceRangeConfig extends DeviceConfig {
   above?: string | number;
   below?: string | number;
 }
+
+export interface Placeholders {
+  fields: string[];
+  domains: string[];
+  device_classes?: string[];
+}
+
+export const getDevicePlaceholders = (
+  domains: string | string[],
+  deviceClasses?: string | string[]
+): Placeholders => {
+  const placeholder: Placeholders = {
+    fields: ["device_id", "entity_id"],
+    domains: typeof domains === "string" ? [domains] : domains
+  };
+  if (deviceClasses) {
+    placeholder.device_classes =
+      typeof deviceClasses === "string" ? [deviceClasses] : deviceClasses;
+  }
+  return placeholder;
+};
 
 export const getFilterRangeConfig = <T extends DeviceRangeConfig>(
   config: T,
@@ -81,20 +108,28 @@ export const getFilterValue = (info: Info, context: Context) => {
 
 export const convertRule = async (rule: Rule, context: Context = {}) => {
   const automation: AutomationConfig = {};
+  const placeholders: AutomationPlaceholders = {};
 
   const trigger = await convertTrigger(rule, context);
   const condition = await convertCondition(rule, context);
   const action = await convertAction(rule, context);
 
   if (trigger) {
-    automation.trigger = [trigger];
+    automation.trigger = [trigger.automation];
+    if (trigger.placeholders) {
+      placeholders.trigger = [trigger.placeholders];
+    }
   }
   if (condition) {
-    automation.condition = [condition];
+    automation.condition = [condition.automation];
+    if (condition.placeholders) {
+      placeholders.condition = [condition.placeholders];
+    }
   }
   if (action) {
-    automation.action = action;
+    automation.action = action.automation;
+    placeholders.action = action.placeholders;
   }
 
-  return { automation, context };
+  return { automation, placeholders };
 };

@@ -29,10 +29,10 @@ describe("convert thingtalk to hass config", () => {
 
     const config = await convertRule(program.rules[0]);
 
-    assert.deepEqual(config, {
+    assert.deepEqual(config.automation, {
       condition: [
         {
-          platform: "device",
+          condition: "device",
           domain: "climate",
           entity_id: "",
           device_id: "",
@@ -42,7 +42,6 @@ describe("convert thingtalk to hass config", () => {
       ],
       action: [
         {
-          platform: "device",
           domain: "light",
           entity_id: "",
           device_id: "",
@@ -78,7 +77,7 @@ describe("convert thingtalk to hass config", () => {
 
     const config = await convertRule(program.rules[0]);
 
-    assert.deepEqual(config, {
+    assert.deepEqual(config.automation, {
       trigger: [
         {
           platform: "zone",
@@ -89,7 +88,6 @@ describe("convert thingtalk to hass config", () => {
       ],
       action: [
         {
-          platform: "device",
           domain: "climate",
           entity_id: "",
           device_id: "",

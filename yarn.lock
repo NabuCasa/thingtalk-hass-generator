@@ -431,7 +431,7 @@ inherits@2, inherits@~2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-ip@~1.1.0:
+ip@^1.1.0:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
   integrity sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=
@@ -636,7 +636,7 @@ node-environment-flags@1.0.5:
     object.getownpropertydescriptors "^2.0.3"
     semver "^5.7.0"
 
-oauth@~0.9.14:
+oauth@^0.9.14:
   version "0.9.15"
   resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.15.tgz#bd1fefaf686c96b75475aed5196412ff60cfb9c1"
   integrity sha1-vR/vr2hslrdUda7VGWQS/2DPucE=
@@ -880,22 +880,22 @@ supports-color@^5.3.0:
   dependencies:
     has-flag "^3.0.0"
 
-thingpedia@^2.6.0-alpha.2:
-  version "2.6.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/thingpedia/-/thingpedia-2.6.0-alpha.2.tgz#c54636c2c5ca96504eb9bcd489dc6f66996f4371"
-  integrity sha512-2E8Du8Ev6XU0p9vZljmalAsLnE5mvMHoOc7WNMSAEap8aW1sHe+sxwvkuHnu3z14VlCeMFNi7iZ3hwlW/44Fdg==
+thingpedia@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/thingpedia/-/thingpedia-2.6.0.tgz#b948c22265d65ebd655a3f1c8d3401ef351bcce8"
+  integrity sha512-nICn8qQTl52wuMMehuYqjW51Q0aFAZKjfoKzu32D0KtHl85BNLb8TI39vI5qHY5iF/YIwYNtPlfrcZvCsAAg2g==
   dependencies:
     feedparser "^2.2.9"
-    ip "~1.1.0"
-    oauth "~0.9.14"
-    thingtalk "~1.9.0-alpha.1"
+    ip "^1.1.0"
+    oauth "^0.9.14"
+    thingtalk "~1.9.0"
     tmp "^0.1.0"
     xml2js "^0.4.17"
 
-thingtalk@^1.9.0-beta.1, thingtalk@~1.9.0-alpha.1:
-  version "1.9.0-beta.1"
-  resolved "https://registry.yarnpkg.com/thingtalk/-/thingtalk-1.9.0-beta.1.tgz#f7d5fbd457f199814cf33cb8732f51640a39b2ab"
-  integrity sha512-1idMnmj7ecyfNPjpr/5JDTdwnMsfevGDp8smXac/z4SKUvlgUa4W60AnyKN4aKxMmnm2nvkteWrs+EupnYrOww==
+thingtalk@^1.9.0, thingtalk@~1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/thingtalk/-/thingtalk-1.9.0.tgz#1caee484a69544d79b9f9f21af9e93c43c742284"
+  integrity sha512-7WoExlQt6NP/9SN5ViHBO2Qw8/zLSyOGk28TRT4u9igkb/uCKs7BMEdFgUEIBODeCfKBFQ0m3UsPsDZQrKBVOQ==
   dependencies:
     adt "~0.7.2"
     byline "^5.0.0"
