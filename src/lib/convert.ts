@@ -31,6 +31,7 @@ export interface DeviceRangeConfig extends DeviceConfig {
 }
 
 export interface Placeholders {
+  index?: number;
   fields: string[];
   domains: string[];
   device_classes?: string[];
@@ -117,18 +118,20 @@ export const convertRule = async (rule: Rule, context: Context = {}) => {
   if (trigger) {
     automation.trigger = [trigger.automation];
     if (trigger.placeholders) {
-      placeholders.trigger = [trigger.placeholders];
+      placeholders.trigger = [{ index: 0, ...trigger.placeholders }];
     }
   }
   if (condition) {
     automation.condition = [condition.automation];
     if (condition.placeholders) {
-      placeholders.condition = [condition.placeholders];
+      placeholders.condition = [{ index: 0, ...condition.placeholders }];
     }
   }
   if (action) {
     automation.action = action.automation;
-    placeholders.action = action.placeholders;
+    if (action.placeholders) {
+      placeholders.action = action.placeholders;
+    }
   }
 
   return { automation, placeholders };

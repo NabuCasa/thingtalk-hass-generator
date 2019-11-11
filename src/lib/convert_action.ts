@@ -21,6 +21,8 @@ export const convertAction = async (rule: Rule, context: Context) => {
   const actions: any[] = [];
   const placeholders: any[] = [];
 
+  let index = 0;
+
   for (const action of rule.actions) {
     const kind = action.invocation.selector!.kind;
     const channel = action.invocation.channel;
@@ -60,10 +62,18 @@ export const convertAction = async (rule: Rule, context: Context) => {
     }
 
     actions.push(automationAction.automation);
-    placeholders.push(automationAction.placeholders);
+    if (automationAction.placeholders) {
+      placeholders.push({ index, ...automationAction.placeholders });
+    }
+    index++;
   }
 
-  if (actions.length > 0) {
+  if (actions.length === 0) {
+    return;
+  }
+  if (placeholders.length > 0) {
     return { automation: actions, placeholders };
+  } else {
+    return { automation: actions };
   }
 };
