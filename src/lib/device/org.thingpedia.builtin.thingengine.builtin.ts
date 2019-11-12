@@ -1,5 +1,5 @@
 import { Info } from "../rule";
-import { getFilterValue } from "../convert";
+import { getFilterValue, Placeholders } from "../convert";
 import { addWarning, Context } from "../context";
 
 export interface ZoneTrigger {
@@ -15,8 +15,13 @@ export interface ZoneCondition {
   entity_id: string;
 }
 
+const ZonePlaceholders = { fields: ["entity_id"], domains: ["person"] };
+
 export const TRIGGERS = {
-  get_gps: (info: Info, context: Context): ZoneTrigger => {
+  get_gps: (
+    info: Info,
+    context: Context
+  ): { automation: ZoneTrigger; placeholders: Placeholders } => {
     const trigger: ZoneTrigger = {
       platform: "zone",
       entity_id: ""
@@ -40,16 +45,22 @@ export const TRIGGERS = {
           });
       }
     }
-    return trigger;
+    return { automation: trigger, placeholders: ZonePlaceholders };
   }
 };
 
 export const CONDITIONS = {
-  get_gps: (info: Info, context: Context): ZoneCondition => {
+  get_gps: (
+    info: Info,
+    context: Context
+  ): { automation: ZoneCondition; placeholders: Placeholders } => {
     return {
-      condition: "zone",
-      entity_id: "",
-      zone: `zone.${getFilterValue(info, context).relativeTag}`
+      automation: {
+        condition: "zone",
+        entity_id: "",
+        zone: `zone.${getFilterValue(info, context).relativeTag}`
+      },
+      placeholders: ZonePlaceholders
     };
   }
 };

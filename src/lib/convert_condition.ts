@@ -65,5 +65,5 @@ export const convertCondition = async (rule: Rule, context: Context) => {
     return;
   }
 
-  return condition;
+  return { automation: condition.automation, placeholders: condition.placeholders };
 };

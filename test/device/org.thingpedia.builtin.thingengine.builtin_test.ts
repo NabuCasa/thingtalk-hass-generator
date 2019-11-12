@@ -6,19 +6,22 @@ import {
 
 describe("get_gps triggers", () => {
   it("should handle entering a zone", () => {
-    const trigger = TRIGGERS.get_gps({
-      filters: [
-        {
-          operator: "==",
-          value: {
+    const trigger = TRIGGERS.get_gps(
+      {
+        filters: [
+          {
+            operator: "==",
             value: {
-              relativeTag: "home"
+              value: {
+                relativeTag: "home"
+              }
             }
           }
-        }
-      ]
-    });
-    assert.deepEqual(trigger, {
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(trigger.automation, {
       event: "enter",
       platform: "zone",
       zone: "zone.home",
@@ -26,22 +29,25 @@ describe("get_gps triggers", () => {
     });
   });
   it("should handle leaving a zone", () => {
-    const trigger = TRIGGERS.get_gps({
-      filters: [
-        {
-          expr: {
-            operator: "==",
-            value: {
+    const trigger = TRIGGERS.get_gps(
+      {
+        filters: [
+          {
+            expr: {
+              operator: "==",
               value: {
-                relativeTag: "work"
+                value: {
+                  relativeTag: "work"
+                }
               }
-            }
-          },
-          isNot: true
-        }
-      ]
-    });
-    assert.deepEqual(trigger, {
+            },
+            isNot: true
+          }
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(trigger.automation, {
       event: "leave",
       platform: "zone",
       zone: "zone.work",
@@ -52,41 +58,47 @@ describe("get_gps triggers", () => {
 
 describe("get_gps conditions", () => {
   it("should handle checking if in a zone", () => {
-    const condition = CONDITIONS.get_gps({
-      filters: [
-        {
-          operator: "==",
-          value: {
+    const condition = CONDITIONS.get_gps(
+      {
+        filters: [
+          {
+            operator: "==",
             value: {
-              relativeTag: "home"
+              value: {
+                relativeTag: "home"
+              }
             }
           }
-        }
-      ]
-    });
-    assert.deepEqual(condition, {
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(condition.automation, {
       condition: "zone",
       zone: "zone.home",
       entity_id: ""
     });
   });
   it("should handle checking if not in a zone", () => {
-    const condition = CONDITIONS.get_gps({
-      filters: [
-        {
-          expr: {
-            operator: "==",
-            value: {
+    const condition = CONDITIONS.get_gps(
+      {
+        filters: [
+          {
+            expr: {
+              operator: "==",
               value: {
-                relativeTag: "work"
+                value: {
+                  relativeTag: "work"
+                }
               }
-            }
-          },
-          isNot: true
-        }
-      ]
-    });
-    assert.deepEqual(condition, {
+            },
+            isNot: true
+          }
+        ]
+      },
+      {}
+    );
+    assert.deepEqual(condition.automation, {
       condition: "zone",
       zone: "zone.work",
       entity_id: ""

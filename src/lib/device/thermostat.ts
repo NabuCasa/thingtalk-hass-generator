@@ -4,7 +4,12 @@ import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_co
 import { Info } from "../rule";
 import { Action } from "../rule";
 import { getDeviceActionTemplate, DeviceActionConfig } from "../convert_action";
-import { getFilterRangeConfig, getFilterValue } from "../convert";
+import {
+  getFilterRangeConfig,
+  getFilterValue,
+  Placeholders,
+  getDevicePlaceholders
+} from "../convert";
 import { Context } from "../context";
 
 export interface ThermostatCondition extends DeviceConditionConfig {
@@ -22,78 +27,132 @@ export interface ThermostatHvacModeAction extends DeviceActionConfig {
 }
 
 export const TRIGGERS = {
-  get_temperature: (info: Info, context: Context): DeviceTriggerConfig => {
+  get_temperature: (
+    info: Info,
+    context: Context
+  ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
     const trigger: DeviceTriggerConfig = {
       ...getDeviceTriggerTemplate("climate"),
       type: "current_temperature_changed"
     };
-    return getFilterRangeConfig(trigger, info, context) as DeviceTriggerConfig;
+    return {
+      automation: getFilterRangeConfig(trigger, info, context) as DeviceTriggerConfig,
+      placeholders: getDevicePlaceholders("climate")
+    };
   },
-  get_humidity: (info: Info, context: Context): DeviceTriggerConfig => {
+  get_humidity: (
+    info: Info,
+    context: Context
+  ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
     const trigger: DeviceTriggerConfig = {
       ...getDeviceTriggerTemplate("climate"),
       type: "current_humidity_changed"
     };
-    return getFilterRangeConfig(trigger, info, context) as DeviceTriggerConfig;
-  },
-  get_hvac_state: (info: Info, context: Context): DeviceTriggerConfig => {
     return {
-      ...getDeviceTriggerTemplate("climate"),
-      type: "hvac_mode_changed",
-      to: getFilterValue(info, context)
+      automation: getFilterRangeConfig(trigger, info, context) as DeviceTriggerConfig,
+      placeholders: getDevicePlaceholders("climate")
+    };
+  },
+  get_hvac_state: (
+    info: Info,
+    context: Context
+  ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
+    return {
+      automation: {
+        ...getDeviceTriggerTemplate("climate"),
+        type: "hvac_mode_changed",
+        to: getFilterValue(info, context)
+      },
+      placeholders: getDevicePlaceholders("climate")
     };
   }
 };
 
 export const CONDITIONS = {
-  get_temperature: (info: Info, context: Context): ThermostatCondition => {
+  get_temperature: (
+    info: Info,
+    context: Context
+  ): { automation: ThermostatCondition; placeholders: Placeholders } => {
     const condition: ThermostatCondition = {
       ...getDeviceConditionTemplate("climate"),
       type: "is_current_temperature"
     };
-    return getFilterRangeConfig(condition, info, context);
+    return {
+      automation: getFilterRangeConfig(condition, info, context),
+      placeholders: getDevicePlaceholders("climate")
+    };
   },
-  get_humidity: (info: Info, context: Context): ThermostatCondition => {
+  get_humidity: (
+    info: Info,
+    context: Context
+  ): { automation: ThermostatCondition; placeholders: Placeholders } => {
     const condition: ThermostatCondition = {
       ...getDeviceConditionTemplate("climate"),
       type: "is_current_humidity"
     };
-    return getFilterRangeConfig(condition, info, context);
-  },
-  get_hvac_state: (info: Info, context: Context): ThermostatCondition => {
     return {
-      ...getDeviceConditionTemplate("climate"),
-      type: "is_hvac_mode",
-      hvac_mode: getFilterValue(info, context)
+      automation: getFilterRangeConfig(condition, info, context),
+      placeholders: getDevicePlaceholders("climate")
+    };
+  },
+  get_hvac_state: (
+    info: Info,
+    context: Context
+  ): { automation: ThermostatCondition; placeholders: Placeholders } => {
+    return {
+      automation: {
+        ...getDeviceConditionTemplate("climate"),
+        type: "is_hvac_mode",
+        hvac_mode: getFilterValue(info, context)
+      },
+      placeholders: getDevicePlaceholders("climate")
     };
   }
 };
 
 export const ACTIONS = {
-  set_target_temperature: (action: Action, context: Context): ThermostatTemperatureAction => {
+  set_target_temperature: (
+    action: Action,
+    context: Context
+  ): { automation: ThermostatTemperatureAction; placeholders: Placeholders } => {
     const { in_params } = action.invocation;
 
     return {
-      ...getDeviceActionTemplate("climate"),
-      type: "set_target_temperature",
-      temperature: getParamValue(in_params, "value", action, context)
+      automation: {
+        ...getDeviceActionTemplate("climate"),
+        type: "set_target_temperature",
+        temperature: getParamValue(in_params, "value", action, context)
+      },
+      placeholders: getDevicePlaceholders("climate")
     };
   },
-  set_minmax_temperature: (action: Action, context: Context): ThermostatTemperatureAction => {
+  set_minmax_temperature: (
+    action: Action,
+    context: Context
+  ): { automation: ThermostatTemperatureAction; placeholders: Placeholders } => {
     const { in_params } = action.invocation;
     return {
-      ...getDeviceActionTemplate("climate"),
-      type: "set_target_temperature",
-      min_temperature: getParamValue(in_params, "low", action, context),
-      max_temperature: getParamValue(in_params, "high", action, context)
+      automation: {
+        ...getDeviceActionTemplate("climate"),
+        type: "set_target_temperature",
+        min_temperature: getParamValue(in_params, "low", action, context),
+        max_temperature: getParamValue(in_params, "high", action, context)
+      },
+      placeholders: getDevicePlaceholders("climate")
     };
   },
-  set_hvac_mode: (action: Action, context: Context): ThermostatHvacModeAction => {
+  set_hvac_mode: (
+    action: Action,
+    context: Context
+  ): { automation: ThermostatHvacModeAction; placeholders: Placeholders } => {
     const { in_params } = action.invocation;
     return {
-      ...getDeviceActionTemplate("climate"),
-      type: "set_hvac_mode",
-      hvac_mode: getParamValue(in_params, "mode", action, context)
+      automation: {
+        ...getDeviceActionTemplate("climate"),
+        type: "set_hvac_mode",
+        hvac_mode: getParamValue(in_params, "mode", action, context)
+      },
+      placeholders: getDevicePlaceholders("climate")
     };
   }
 };

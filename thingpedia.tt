@@ -600,7 +600,7 @@ class @com.forismatic.quotes {
 class @com.steampowered {
   monitorable query get_price(in req game_name: String,
                               in opt country: Entity(tt:country),
-                              out price: Number);
+                              out price: Currency);
 
   query get_steam_id(in req name: String,
                      out id: Entity(com.steampowered:user_id));
@@ -795,7 +795,7 @@ class @com.cryptonator {
 }
 class @org.arxiv {
   monitorable list query query(in opt query: String,
-                               in opt category: String,
+                               in opt category: Entity(org.arxiv:category),
                                out title: String,
                                in opt author: String,
                                out pubDate: Date,
@@ -1056,14 +1056,10 @@ class @com.wikicfp {
 class @rest.kanye {
   query get(out text: String);
 }
-class @org.acm {
-  monitorable list query cacm(out title: String,
-                              out link: Entity(tt:url),
-                              out updated: Date);
-
-  monitorable list query xrds(out title: String,
-                              out link: Entity(tt:url),
-                              out updated: Date);
+class @rickygv.stanforddaily {
+  monitorable list query get_front_page(out title: String,
+                                        out link: Entity(tt:url),
+                                        out updated: Date);
 }
 class @edu.stanford.almond.blog {
   monitorable list query posts(out title: String,
@@ -1079,6 +1075,12 @@ class @co.alphavantage {
   monitorable query get_price(in req company: Entity(tt:stock_id),
                               out price: Currency,
                               out change: Number);
+}
+class @wesleyliu.wiki {
+  list query wikipedia(in req query: String,
+                       out title: String,
+                       out description: String,
+                       out link: Entity(tt:url));
 }
 class @com.yelp {
   monitorable list query search(in opt query: String,
@@ -1100,4 +1102,65 @@ class @com.smbc-comics {
                                out updated: Date);
 }
 class @io.home-assistant {
+}
+class @io.home-assistant.air {
+  monitorable query state(out state: Enum(gas,smoke,nothing));
+}
+class @io.home-assistant.battery {
+  monitorable query state(out state: Enum(low,normal),
+                          out value: Number);
+}
+class @io.home-assistant.connectivity {
+  monitorable query state(out state: Enum(connected,disconnected));
+}
+class @io.home-assistant.cover {
+  monitorable query state(out state: Enum(open,closed));
+
+  action set_openclose(in req state: Enum(open,close));
+}
+class @io.home-assistant.door {
+  monitorable query state(out state: Enum(open,closed));
+}
+class @io.home-assistant.fan {
+  monitorable query oscillation(out state: Enum(oscillating,not_oscillating));
+
+  monitorable query state(out state: Enum(on,off));
+
+  action set_oscillation(in req oscillation: Enum(on,off));
+
+  action set_power(in req power: Enum(on,off));
+}
+class @io.home-assistant.heat {
+  monitorable query state(out state: Enum(hot,cold,normal));
+}
+class @io.home-assistant.motion {
+  monitorable query state(out state: Enum(detecting,not_detecting));
+}
+class @io.home-assistant.occupancy {
+  monitorable query state(out state: Enum(occupied,unoccupied));
+}
+class @io.home-assistant.plug {
+  monitorable query state(out state: Enum(plugged,unplugged));
+}
+class @io.home-assistant.sound {
+  monitorable query state(out state: Enum(detecting,not_detecting));
+}
+class @io.home-assistant.switch {
+  monitorable query state(out state: Enum(on,off));
+
+  action set_power(in req power: Enum(on,off));
+}
+class @io.home-assistant.vacuum {
+  monitorable query state(out state: Enum(on,off,docked),
+                          out status: String);
+
+  action pause();
+
+  action return_to_base();
+
+  action set_power(in req power: Enum(on,off));
+
+  action start();
+
+  action stop();
 }
