@@ -58,29 +58,34 @@ export const getFilterRangeConfig = <T extends DeviceRangeConfig>(
   context: Context
 ): T => {
   for (const filter of info.filters) {
-    switch (filter.operator) {
-      case ">=":
-        config.above = filter.value!.value;
-        break;
+    config = getFilterRangeValue(config, filter, info, context);
+  }
+  return config;
+};
 
-      case "==":
-        config.above = Number(filter.value!.value) - 1;
-        config.below = Number(filter.value!.value) + 1;
-        break;
+export const getFilterRangeValue = (config, filter, info, context) => {
+  switch (filter.operator) {
+    case ">=":
+      config.above = filter.value!.value;
+      break;
 
-      case "<=":
-        config.below = filter.value!.value;
-        break;
+    case "==":
+      config.above = Number(filter.value!.value) - 1;
+      config.below = Number(filter.value!.value) + 1;
+      break;
 
-      default:
-        addWarning(context, {
-          part: info.part!,
-          warning: "unknown operator for filter",
-          kind: info.invocation!.selector!.kind,
-          channel: info.invocation!.channel,
-          value: filter.toJSON
-        });
-    }
+    case "<=":
+      config.below = filter.value!.value;
+      break;
+
+    default:
+      addWarning(context, {
+        part: info.part!,
+        warning: "unknown operator for filter",
+        kind: info.invocation!.selector!.kind,
+        channel: info.invocation!.channel,
+        value: filter.toJSON
+      });
   }
   return config;
 };

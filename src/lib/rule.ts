@@ -25,6 +25,7 @@ export interface Action {
 
 export interface Filter {
   operator?: string;
+  name?: string;
   value?: Value;
   expr?: Filter;
   isNot?: boolean;
