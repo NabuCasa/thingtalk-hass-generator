@@ -9,10 +9,13 @@ export const TRIGGERS = {
     info: Info,
     context: Context
   ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
-    const trigger: DeviceTriggerConfig = getDeviceTriggerTemplate("sensor");
+    const trigger: DeviceTriggerConfig = getDeviceTriggerTemplate("binary_sensor");
     return {
-      automation: { ...trigger, type: `turned_${getFilterValue(info, context)}` },
-      placeholders: getDevicePlaceholders(["sensor", "binary_sensor"], "battery")
+      automation: {
+        ...trigger,
+        type: getFilterValue(info, context) === "open" ? "opened" : "closed"
+      },
+      placeholders: getDevicePlaceholders(["binary_sensor", "cover"], "door")
     };
   }
 };
@@ -22,10 +25,13 @@ export const CONDITIONS = {
     info: Info,
     context: Context
   ): { automation: DeviceConditionConfig; placeholders: Placeholders } => {
-    const condition: DeviceConditionConfig = getDeviceConditionTemplate("sensor");
+    const condition: DeviceConditionConfig = getDeviceConditionTemplate("binary_sensor");
     return {
-      automation: { ...condition, type: `is_${getFilterValue(info, context)}` },
-      placeholders: getDevicePlaceholders(["sensor", "binary_sensor"], "battery")
+      automation: {
+        ...condition,
+        type: getFilterValue(info, context) === "open" ? "is_open" : "is_closed"
+      },
+      placeholders: getDevicePlaceholders(["binary_sensor", "cover"], "door")
     };
   }
 };
