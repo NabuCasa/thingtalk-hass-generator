@@ -24,11 +24,16 @@ export const convertAction = async (rule: Rule, context: Context) => {
   let index = 0;
 
   for (const action of rule.actions) {
-    const kind = action.invocation.selector!.kind;
+    debugger;
+    let kind = action.invocation.selector!.kind;
     const channel = action.invocation.channel;
-    action.part = "condition";
+    action.part = "action";
 
     let kindPackage;
+
+    if (!kind && channel === "notify") {
+      kind = "notify";
+    }
 
     try {
       kindPackage = await import(`./device/${kind}`);

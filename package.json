@@ -1,6 +1,6 @@
 {
   "name": "@nabucasa/thingtalk-hass-generator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Generate Home Assistant automations with thingtalk",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
