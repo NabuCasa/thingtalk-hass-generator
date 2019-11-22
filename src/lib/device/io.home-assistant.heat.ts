@@ -10,7 +10,7 @@ export const TRIGGERS = {
     context: Context
   ): { automation: DeviceTriggerConfig; placeholder: Placeholders } => {
     const trigger = getDeviceTriggerTemplate("binary_sensor");
-    const placeholder = getDevicePlaceholders("binary_sensor");
+    const placeholder = getDevicePlaceholders("binary_sensor", info.invocation?.selector);
     switch (getFilterValue(info, context)) {
       case "hot":
         trigger.type = "hot";
@@ -38,7 +38,7 @@ export const CONDITIONS = {
     context: Context
   ): { automation: DeviceConditionConfig; placeholder: Placeholders } => {
     const condition = getDeviceConditionTemplate("binary_sensor");
-    const placeholder = getDevicePlaceholders("binary_sensor");
+    const placeholder = getDevicePlaceholders("binary_sensor", info.invocation?.selector);
     switch (getFilterValue(info, context)) {
       case "hot":
         condition.type = "is_hot";

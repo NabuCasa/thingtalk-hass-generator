@@ -5,15 +5,17 @@ import { getFilterValue, Placeholders, getDevicePlaceholders } from "../convert"
 import { getDeviceConditionTemplate, DeviceConditionConfig } from "../convert_condition";
 import { Context } from "../context";
 
+const DOMAIN = "light";
+
 export const TRIGGERS = {
   power: (
     info: Info,
     context: Context
   ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
-    const trigger: DeviceTriggerConfig = getDeviceTriggerTemplate("light");
+    const trigger: DeviceTriggerConfig = getDeviceTriggerTemplate(DOMAIN);
     return {
       automation: { ...trigger, type: `turned_${getFilterValue(info, context)}` },
-      placeholders: getDevicePlaceholders("light")
+      placeholders: getDevicePlaceholders(DOMAIN, info.invocation?.selector)
     };
   }
 };
@@ -23,10 +25,10 @@ export const CONDITIONS = {
     info: Info,
     context: Context
   ): { automation: DeviceConditionConfig; placeholders: Placeholders } => {
-    const condition: DeviceConditionConfig = getDeviceConditionTemplate("light");
+    const condition: DeviceConditionConfig = getDeviceConditionTemplate(DOMAIN);
     return {
       automation: { ...condition, type: `is_${getFilterValue(info, context)}` },
-      placeholders: getDevicePlaceholders("light")
+      placeholders: getDevicePlaceholders(DOMAIN, info.invocation?.selector)
     };
   }
 };
@@ -36,13 +38,13 @@ export const ACTIONS = {
     action: Action,
     context: Context
   ): { automation: DeviceActionConfig; placeholders: Placeholders } => {
-    const { in_params } = action.invocation;
+    const { in_params, selector } = action.invocation;
     return {
       automation: {
-        ...getDeviceActionTemplate("light"),
-        type: getParamValue(in_params, "power", action, context) == "on" ? "turn_on" : "turn_off"
+        ...getDeviceActionTemplate(DOMAIN),
+        type: `turn_${getParamValue(in_params, "power", action, context)}`
       },
-      placeholders: getDevicePlaceholders("light")
+      placeholders: getDevicePlaceholders(DOMAIN, selector)
     };
   }
 };

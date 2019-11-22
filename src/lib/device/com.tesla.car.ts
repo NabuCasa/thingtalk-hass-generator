@@ -10,7 +10,11 @@ export const TRIGGERS = {
     context: Context
   ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
     let trigger: DeviceTriggerConfig;
-    const placeholders: Placeholders = getDevicePlaceholders("", "battery");
+    const placeholders: Placeholders = getDevicePlaceholders(
+      "",
+      info.invocation!.selector,
+      "battery"
+    );
     for (const filter of info.filters) {
       const filterExpr = filter.expr || filter;
       switch (filterExpr.name) {
@@ -65,7 +69,11 @@ export const CONDITIONS = {
     context: Context
   ): { automation: DeviceConditionConfig; placeholders: Placeholders } => {
     let condition: DeviceConditionConfig;
-    const placeholders: Placeholders = getDevicePlaceholders("", "battery");
+    const placeholders: Placeholders = getDevicePlaceholders(
+      "",
+      info.invocation!.selector,
+      "battery"
+    );
     for (const filter of info.filters) {
       const filterExpr = filter.expr || filter;
       switch (filterExpr.name) {

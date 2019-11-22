@@ -1,7 +1,7 @@
 import { convertTrigger, DeviceTriggerConfig } from "./convert_trigger";
 import { convertCondition, DeviceConditionConfig } from "./convert_condition";
 import { convertAction } from "./convert_action";
-import { Rule, Info } from "./rule";
+import { Rule, Info, Selector } from "./rule";
 import { Context, addWarning } from "./context";
 
 export interface AutomationConfig {
@@ -35,10 +35,12 @@ export interface Placeholders {
   fields: string[];
   domains: string[];
   device_classes?: string[];
+  name?: string;
 }
 
 export const getDevicePlaceholders = (
   domains: string | string[],
+  selector?: Selector,
   deviceClasses?: string | string[]
 ): Placeholders => {
   const placeholder: Placeholders = {
@@ -48,6 +50,19 @@ export const getDevicePlaceholders = (
   if (deviceClasses) {
     placeholder.device_classes =
       typeof deviceClasses === "string" ? [deviceClasses] : deviceClasses;
+  }
+  if (selector) {
+    let deviceName: string | undefined;
+    if (selector && selector.attributes) {
+      selector.attributes.forEach(attribute => {
+        if (attribute.name === "name") {
+          deviceName = attribute.value.value;
+        }
+      });
+    }
+    if (deviceName) {
+      placeholder.name = deviceName;
+    }
   }
   return placeholder;
 };

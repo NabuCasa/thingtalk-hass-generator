@@ -3,7 +3,7 @@ import { convertRule } from "../src/lib/convert";
 import tt from "thingtalk";
 import { schemaRetriever } from "../src/lib/schema_retriever";
 
-describe("convert thingtalk to hass config", () => {
+describe("Convert thingtalk to hass config", () => {
   it("should handle condition and action", async () => {
     const program = tt.NNSyntax.fromNN(
       [

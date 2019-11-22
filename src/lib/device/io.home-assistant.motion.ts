@@ -15,7 +15,7 @@ export const TRIGGERS = {
         ...trigger,
         type: getFilterValue(info, context) === "detecting" ? "motion" : "no_motion"
       },
-      placeholders: getDevicePlaceholders("binary_sensor", "motion")
+      placeholders: getDevicePlaceholders("binary_sensor", info.invocation?.selector, "motion")
     };
   }
 };
@@ -31,7 +31,7 @@ export const CONDITIONS = {
         ...condition,
         type: getFilterValue(info, context) === "detecting" ? "is_motion" : "is_no_motion"
       },
-      placeholders: getDevicePlaceholders("binary_sensor", "motion")
+      placeholders: getDevicePlaceholders("binary_sensor", info.invocation?.selector, "motion")
     };
   }
 };

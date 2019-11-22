@@ -15,7 +15,11 @@ export const TRIGGERS = {
         ...trigger,
         type: getFilterValue(info, context) === "open" ? "opened" : "closed"
       },
-      placeholders: getDevicePlaceholders(["binary_sensor", "cover"], "door")
+      placeholders: getDevicePlaceholders(
+        ["binary_sensor", "cover"],
+        info.invocation!.selector,
+        "door"
+      )
     };
   }
 };
@@ -31,7 +35,11 @@ export const CONDITIONS = {
         ...condition,
         type: getFilterValue(info, context) === "open" ? "is_open" : "is_closed"
       },
-      placeholders: getDevicePlaceholders(["binary_sensor", "cover"], "door")
+      placeholders: getDevicePlaceholders(
+        ["binary_sensor", "cover"],
+        info.invocation!.selector,
+        "door"
+      )
     };
   }
 };
