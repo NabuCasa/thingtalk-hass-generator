@@ -16,7 +16,7 @@ export const TRIGGERS = {
         ...trigger,
         type: getFilterValue(info, context) === "open" ? "opened" : "closed"
       },
-      placeholders: getDevicePlaceholders("cover")
+      placeholders: getDevicePlaceholders("cover", info.invocation?.selector)
     };
   }
 };
@@ -42,13 +42,13 @@ export const ACTIONS = {
     action: Action,
     context: Context
   ): { automation: DeviceActionConfig; placeholders: Placeholders } => {
-    const { in_params } = action.invocation;
+    const { in_params, selector } = action.invocation;
     return {
       automation: {
         ...getDeviceActionTemplate("cover"),
         type: getParamValue(in_params, "state", action, context)
       },
-      placeholders: getDevicePlaceholders("cover")
+      placeholders: getDevicePlaceholders("cover", selector)
     };
   }
 };

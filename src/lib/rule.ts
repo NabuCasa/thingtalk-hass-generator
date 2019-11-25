@@ -20,6 +20,7 @@ export interface Stream {
 
 export interface Action {
   invocation: Invocation;
+  selector?: Selector;
   part?: Part;
 }
 
@@ -29,6 +30,9 @@ export interface Filter {
   value?: Value;
   expr?: Filter;
   isNot?: boolean;
+  channel?: string;
+  selector?: Selector;
+  operands?: any[];
   toJSON?: () => { [key: string]: any };
 }
 
@@ -39,11 +43,14 @@ export interface Value {
 export interface Invocation {
   selector?: Selector;
   channel?: string;
-  in_params: any;
+  in_params?: any;
 }
 
 export interface Selector {
   kind: string;
+  attributes?: any[];
+  principal?: any;
+  id?: any;
 }
 
 export interface Info {
