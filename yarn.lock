@@ -715,6 +715,11 @@ pathval@^1.1.0:
   resolved "https://registry.yarnpkg.com/pathval/-/pathval-1.1.0.tgz#b942e6d4bde653005ef6b71361def8727d0645e0"
   integrity sha1-uULm1L3mUwBe9rcTYd74cn0GReA=
 
+prettier@^1.19.1:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
+  integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
+
 process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
@@ -892,7 +897,17 @@ thingpedia@^2.6.0:
     tmp "^0.1.0"
     xml2js "^0.4.17"
 
-thingtalk@^1.9.0, thingtalk@~1.9.0:
+thingtalk@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/thingtalk/-/thingtalk-1.9.2.tgz#3e8e5746a6a021134bb5125f39d63aa58f76cd00"
+  integrity sha512-cWWIfyJU7To1khT9i/C2/6r82m7cd+VBwWgDfLu/uAhAdSDXY9jT0M8xzA4Gfh70xKS6e1Tq3G90nxMCvtpdag==
+  dependencies:
+    adt "~0.7.2"
+    byline "^5.0.0"
+    consumer-queue "^1.0.0"
+    smtlib "^0.1.1"
+
+thingtalk@~1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/thingtalk/-/thingtalk-1.9.0.tgz#1caee484a69544d79b9f9f21af9e93c43c742284"
   integrity sha512-7WoExlQt6NP/9SN5ViHBO2Qw8/zLSyOGk28TRT4u9igkb/uCKs7BMEdFgUEIBODeCfKBFQ0m3UsPsDZQrKBVOQ==

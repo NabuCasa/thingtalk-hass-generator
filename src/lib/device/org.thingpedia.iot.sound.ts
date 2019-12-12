@@ -5,7 +5,7 @@ import { getDeviceConditionTemplate, DeviceConditionConfig } from "../convert_co
 import { Context } from "../context";
 
 export const TRIGGERS = {
-  state: (
+  sound: (
     info: Info,
     context: Context
   ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
@@ -21,7 +21,7 @@ export const TRIGGERS = {
 };
 
 export const CONDITIONS = {
-  state: (
+  sound: (
     info: Info,
     context: Context
   ): { automation: DeviceConditionConfig; placeholders: Placeholders } => {

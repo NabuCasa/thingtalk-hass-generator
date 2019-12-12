@@ -21,7 +21,7 @@
     "axios": "^0.19.0",
     "js-yaml": "^3.13.1",
     "thingpedia": "^2.6.0",
-    "thingtalk": "^1.9.0"
+    "thingtalk": "^1.9.2"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -29,6 +29,7 @@
     "@types/node": "^12.12.5",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
+    "prettier": "^1.19.1",
     "ts-mocha": "^6.0.0",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.1",

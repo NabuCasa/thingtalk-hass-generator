@@ -1,11 +1,11 @@
-import { Info } from "../rule";
-import { getDeviceTriggerTemplate, DeviceTriggerConfig } from "../convert_trigger";
-import { getFilterValue, Placeholders, getDevicePlaceholders } from "../convert";
-import { getDeviceConditionTemplate, DeviceConditionConfig } from "../convert_condition";
 import { Context } from "../context";
+import { getDevicePlaceholders, getFilterValue, Placeholders } from "../convert";
+import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_condition";
+import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
+import { Info } from "../rule";
 
 export const TRIGGERS = {
-  state: (
+  motion: (
     info: Info,
     context: Context
   ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
@@ -21,7 +21,7 @@ export const TRIGGERS = {
 };
 
 export const CONDITIONS = {
-  state: (
+  motion: (
     info: Info,
     context: Context
   ): { automation: DeviceConditionConfig; placeholders: Placeholders } => {

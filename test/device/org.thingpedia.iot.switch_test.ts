@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { ACTIONS, CONDITIONS, TRIGGERS } from "../../src/lib/device/io.home-assistant.switch";
+import { ACTIONS, CONDITIONS, TRIGGERS } from "../../src/lib/device/org.thingpedia.iot.switch";
 
 describe("Switch triggers", () => {
   it("should handle an ON trigger", () => {

@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import { convertRule } from "../src/lib/convert";
 import tt from "thingtalk";
+import { convertRule } from "../src/lib/convert";
 import { schemaRetriever } from "../src/lib/schema_retriever";
 
 describe("Convert thingtalk to hass config", () => {
@@ -10,7 +10,7 @@ describe("Convert thingtalk to hass config", () => {
         "now",
         "=>",
         "(",
-        "@thermostat.get_temperature",
+        "@org.thingpedia.iot.temperature.temperature",
         ")",
         "filter",
         "param:value:Measure(C)",
@@ -33,10 +33,10 @@ describe("Convert thingtalk to hass config", () => {
       condition: [
         {
           condition: "device",
-          domain: "climate",
+          domain: "sensor",
           entity_id: "",
           device_id: "",
-          type: "is_current_temperature",
+          type: "temperature",
           above: 23
         }
       ],

@@ -19,6 +19,7 @@ export const parseUtterance = async (utterance: string, context: Context = {}) =
   }
 
   if (response.data.candidates.length === 0) {
+    console.log(response.data);
     throw new Error("Unable to parse utterance");
   }
 
