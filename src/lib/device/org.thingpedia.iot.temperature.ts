@@ -1,35 +1,11 @@
 import { Context } from "../context";
-import {
-  getDevicePlaceholders,
-  getFilterRangeConfig,
-  getFilterValue,
-  Placeholders
-} from "../convert";
-import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_condition";
+import { getDevicePlaceholders, getFilterRangeConfig, Placeholders } from "../convert";
 import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
 import { Info } from "../rule";
-
-export interface SunTrigger {
-  platform: "sun";
-  event: "sunrise" | "sunset";
-}
-
-export interface SunCondition {
-  condition: "sun";
-  after?: "sunrise" | "sunset";
-  before?: "sunrise" | "sunset";
-}
+import { getDeviceConditionTemplate, DeviceConditionConfig } from "../convert_condition";
 
 export const TRIGGERS = {
-  sunrise: (info: Info, context: Context): { automation: SunTrigger } => {
-    return {
-      automation: {
-        platform: "sun",
-        event: getFilterValue(info, context) ? "sunset" : "sunrise"
-      }
-    };
-  },
-  current: (
+  temperature: (
     info: Info,
     context: Context
   ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
@@ -45,15 +21,7 @@ export const TRIGGERS = {
 };
 
 export const CONDITIONS = {
-  sunrise: (info: Info, context: Context): { automation: SunCondition } => {
-    return {
-      automation: {
-        condition: "sun",
-        after: getFilterValue(info, context) ? "sunset" : "sunrise"
-      }
-    };
-  },
-  current: (
+  temperature: (
     info: Info,
     context: Context
   ): { automation: DeviceConditionConfig; placeholders: Placeholders } => {

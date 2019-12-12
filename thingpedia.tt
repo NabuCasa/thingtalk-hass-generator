@@ -90,14 +90,10 @@ class @org.thingpedia.builtin.thingengine.phone {
 class @com.nest {
 }
 class @thermostat {
-  monitorable query get_humidity(out value: Number);
+  monitorable query get_hvac_state(out mode: Enum(heat,cool,heat_cool,off,auto,dry,fan_only),
+                                   out state: Enum(heating,cooling,off,drying,idle,fan));
 
-  monitorable query get_hvac_state(out mode: Enum(heat,cool,heat_cool,off),
-                                   out state: Enum(heating,cooling,off));
-
-  monitorable query get_temperature(out value: Measure(C));
-
-  action set_hvac_mode(in req mode: Enum(heat,cool,heat_cool,off));
+  action set_hvac_mode(in req mode: Enum(heat,cool,heat_cool,off,auto,dry,fan_only));
 
   action set_minmax_temperature(in req low: Measure(C),
                                 in req high: Measure(C));
@@ -143,15 +139,6 @@ class @com.slack {
                             in req topic: String);
 }
 class @org.thingpedia.bluetooth.speaker.a2dp {
-  action lower_volume();
-
-  action play_music();
-
-  action raise_volume();
-
-  action set_sink();
-
-  action set_volume(in req percent: Number);
 }
 class @com.bing {
   monitorable list query image_search(in req query: String,
@@ -510,19 +497,6 @@ class @com.reddit.frontpage {
                              out updated: Date);
 }
 class @com.lg.tv.webos2 {
-  action lower_volume();
-
-  action mute();
-
-  action play_url(in req url: Entity(tt:url));
-
-  action raise_volume();
-
-  action set_power(in req power: Enum(on,off));
-
-  action set_volume(in req percent: Number);
-
-  action unmute();
 }
 class @com.wsj {
   monitorable list query get(in req section: Enum(opinions,world_news,us_business,markets,technology,lifestyle),
@@ -732,19 +706,6 @@ class @com.nest.security_camera {
   action set_power(in req power: Enum(on,off));
 }
 class @com.nest.thermostat {
-  monitorable query get_humidity(out value: Number);
-
-  monitorable query get_hvac_state(out mode: Enum(heat,cool,heat_cool,off),
-                                   out state: Enum(heating,cooling,off));
-
-  monitorable query get_temperature(out value: Measure(C));
-
-  action set_hvac_mode(in req mode: Enum(heat,cool,heat_cool,off));
-
-  action set_minmax_temperature(in req low: Measure(C),
-                                in req high: Measure(C));
-
-  action set_target_temperature(in req value: Measure(C));
 }
 class @com.microsoft.cognitive.vision {
   query generate_description(in req picture_url: Entity(tt:picture),
@@ -1103,25 +1064,22 @@ class @com.smbc-comics {
 }
 class @io.home-assistant {
 }
-class @io.home-assistant.air {
+class @org.thingpedia.iot.air {
   monitorable query state(out state: Enum(gas,smoke,nothing));
 }
-class @io.home-assistant.battery {
+class @org.thingpedia.iot.battery {
   monitorable query state(out state: Enum(low,normal),
                           out value: Number);
 }
-class @io.home-assistant.connectivity {
-  monitorable query state(out state: Enum(connected,disconnected));
-}
-class @io.home-assistant.cover {
+class @org.thingpedia.iot.cover {
   monitorable query state(out state: Enum(open,closed));
 
   action set_openclose(in req state: Enum(open,close));
 }
-class @io.home-assistant.door {
+class @org.thingpedia.iot.door {
   monitorable query state(out state: Enum(open,closed));
 }
-class @io.home-assistant.fan {
+class @org.thingpedia.iot.fan {
   monitorable query oscillation(out state: Enum(oscillating,not_oscillating));
 
   monitorable query state(out state: Enum(on,off));
@@ -1130,27 +1088,27 @@ class @io.home-assistant.fan {
 
   action set_power(in req power: Enum(on,off));
 }
-class @io.home-assistant.heat {
+class @org.thingpedia.iot.heat {
   monitorable query state(out state: Enum(hot,cold,normal));
 }
-class @io.home-assistant.motion {
-  monitorable query state(out state: Enum(detecting,not_detecting));
+class @org.thingpedia.iot.motion {
+  monitorable query motion(out state: Enum(detecting,not_detecting));
 }
-class @io.home-assistant.occupancy {
-  monitorable query state(out state: Enum(occupied,unoccupied));
+class @org.thingpedia.iot.occupancy {
+  monitorable query occupancy(out state: Enum(detecting,not_detecting));
 }
-class @io.home-assistant.plug {
+class @org.thingpedia.iot.plug {
   monitorable query state(out state: Enum(plugged,unplugged));
 }
-class @io.home-assistant.sound {
-  monitorable query state(out state: Enum(detecting,not_detecting));
+class @org.thingpedia.iot.sound {
+  monitorable query sound(out state: Enum(detecting,not_detecting));
 }
-class @io.home-assistant.switch {
+class @org.thingpedia.iot.switch {
   monitorable query state(out state: Enum(on,off));
 
   action set_power(in req power: Enum(on,off));
 }
-class @io.home-assistant.vacuum {
+class @org.thingpedia.iot.vacuum {
   monitorable query state(out state: Enum(on,off,docked),
                           out status: String);
 
@@ -1163,4 +1121,62 @@ class @io.home-assistant.vacuum {
   action start();
 
   action stop();
+}
+class @com.popsci {
+  monitorable list query articles(out title: String,
+                                  out link: Entity(tt:url),
+                                  out updated: Date);
+}
+class @org.thingpedia.iot.humidity {
+  monitorable query humidity(out state: Enum(humid,normal),
+                             out value: Number);
+}
+class @org.thingpedia.iot.lock {
+  monitorable query state(out state: Enum(unlocked,locked));
+
+  action set_state(in req state: Enum(lock,unlock));
+}
+class @org.thingpedia.iot.moisture {
+  monitorable query state(out state: Enum(wet,dry));
+}
+class @org.thingpedia.iot.speaker {
+  monitorable query power(out state: Enum(on,off));
+
+  action lower_volume();
+
+  action mute();
+
+  action play_music();
+
+  action raise_volume();
+
+  action set_power(in req power: Enum(on,off));
+
+  action set_sink();
+
+  action set_volume(in req volume: Number);
+
+  action unmute();
+}
+class @org.thingpedia.iot.temperature {
+  monitorable query temperature(out value: Measure(C));
+}
+class @org.thingpedia.iot.tv {
+  monitorable query power(out state: Enum(on,off));
+
+  action lower_volume();
+
+  action mute();
+
+  action play_url(in req url: Entity(tt:url));
+
+  action raise_volume();
+
+  action set_power(in req power: Enum(on,off));
+
+  action set_volume(in req volume: Number);
+
+  action unmute();
+}
+class @io.home-assistant.climate {
 }

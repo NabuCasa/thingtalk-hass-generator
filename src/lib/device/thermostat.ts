@@ -1,16 +1,14 @@
-import { getParamValue } from "../rule";
-import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
-import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_condition";
-import { Info } from "../rule";
-import { Action } from "../rule";
-import { getDeviceActionTemplate, DeviceActionConfig } from "../convert_action";
+import { Context } from "../context";
 import {
+  getDevicePlaceholders,
   getFilterRangeConfig,
   getFilterValue,
-  Placeholders,
-  getDevicePlaceholders
+  Placeholders
 } from "../convert";
-import { Context } from "../context";
+import { DeviceActionConfig, getDeviceActionTemplate } from "../convert_action";
+import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_condition";
+import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
+import { Action, getParamValue, Info } from "../rule";
 
 export interface ThermostatCondition extends DeviceConditionConfig {
   hvac_mode?: string;

@@ -1,8 +1,8 @@
-import { Info } from "../rule";
-import { getFilterValue, Placeholders, getDevicePlaceholders } from "../convert";
 import { Context } from "../context";
-import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
+import { getDevicePlaceholders, getFilterValue, Placeholders } from "../convert";
 import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_condition";
+import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
+import { Info } from "../rule";
 
 export const TRIGGERS = {
   state: (

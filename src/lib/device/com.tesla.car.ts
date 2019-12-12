@@ -1,8 +1,8 @@
+import { addWarning, Context } from "../context";
+import { getDevicePlaceholders, getFilterRangeValue, Placeholders } from "../convert";
+import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_condition";
+import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
 import { Info } from "../rule";
-import { getDeviceTriggerTemplate, DeviceTriggerConfig } from "../convert_trigger";
-import { Placeholders, getDevicePlaceholders, getFilterRangeValue } from "../convert";
-import { getDeviceConditionTemplate, DeviceConditionConfig } from "../convert_condition";
-import { Context, addWarning } from "../context";
 
 export const TRIGGERS = {
   get_charge_state: (

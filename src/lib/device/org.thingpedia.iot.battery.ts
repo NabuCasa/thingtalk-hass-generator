@@ -1,8 +1,8 @@
+import { addWarning, Context } from "../context";
+import { getDevicePlaceholders, getFilterRangeValue, Placeholders } from "../convert";
+import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_condition";
+import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
 import { Info } from "../rule";
-import { getDeviceTriggerTemplate, DeviceTriggerConfig } from "../convert_trigger";
-import { Placeholders, getDevicePlaceholders, getFilterRangeValue } from "../convert";
-import { getDeviceConditionTemplate, DeviceConditionConfig } from "../convert_condition";
-import { Context, addWarning } from "../context";
 
 export const TRIGGERS = {
   state: (
@@ -23,7 +23,7 @@ export const TRIGGERS = {
           placeholders.domains = ["binary_sensor"];
           switch (filterExpr.operator) {
             case "==":
-              if (filterExpr.value!.value == "low") {
+              if (filterExpr.value!.value === "low") {
                 trigger.type = "bat_low";
               } else {
                 trigger.type = "not_bat_low";
