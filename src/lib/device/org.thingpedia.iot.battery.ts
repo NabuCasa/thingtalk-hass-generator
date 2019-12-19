@@ -32,11 +32,11 @@ export const TRIGGERS = {
 
             default:
               addWarning(context, {
-                part: info.part!,
-                warning: "unknown operator for filter",
-                kind: info.invocation!.selector!.kind,
                 channel: info.invocation!.channel,
-                value: filterExpr.toJSON
+                kind: info.invocation!.selector!.kind,
+                part: info.part!,
+                value: filterExpr.toJSON,
+                warning: "unknown operator for filter"
               });
           }
           break;
@@ -50,11 +50,11 @@ export const TRIGGERS = {
           break;
         default:
           addWarning(context, {
-            part: info.part!,
-            warning: "unknown filter",
-            kind: info.invocation!.selector!.kind,
             channel: info.invocation!.channel,
-            value: filterExpr.toJSON
+            kind: info.invocation!.selector!.kind,
+            part: info.part!,
+            value: filterExpr.toJSON,
+            warning: "unknown filter"
           });
       }
     }
@@ -82,7 +82,7 @@ export const CONDITIONS = {
           placeholders.domains = ["binary_sensor"];
           switch (filterExpr.operator) {
             case "==":
-              if (filterExpr.value!.value == "low") {
+              if (filterExpr.value!.value === "low") {
                 condition.type = "is_bat_low";
               } else {
                 condition.type = "is_not_bat_low";
@@ -91,11 +91,11 @@ export const CONDITIONS = {
 
             default:
               addWarning(context, {
-                part: info.part!,
-                warning: "unknown operator for filter",
-                kind: info.invocation!.selector!.kind,
                 channel: info.invocation!.channel,
-                value: filterExpr.toJSON
+                kind: info.invocation!.selector!.kind,
+                part: info.part!,
+                value: filterExpr.toJSON,
+                warning: "unknown operator for filter"
               });
           }
           break;
@@ -109,11 +109,11 @@ export const CONDITIONS = {
           break;
         default:
           addWarning(context, {
-            part: info.part!,
-            warning: "unknown filter",
-            kind: info.invocation!.selector!.kind,
             channel: info.invocation!.channel,
-            value: filterExpr.toJSON
+            kind: info.invocation!.selector!.kind,
+            part: info.part!,
+            value: filterExpr.toJSON,
+            warning: "unknown filter"
           });
       }
     }

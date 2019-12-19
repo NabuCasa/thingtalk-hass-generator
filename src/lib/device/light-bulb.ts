@@ -1,9 +1,9 @@
-import { getParamValue, Action, Info } from "../rule";
-import { getDeviceTriggerTemplate, DeviceTriggerConfig } from "../convert_trigger";
-import { getDeviceActionTemplate, DeviceActionConfig } from "../convert_action";
-import { getFilterValue, Placeholders, getDevicePlaceholders } from "../convert";
-import { getDeviceConditionTemplate, DeviceConditionConfig } from "../convert_condition";
 import { Context } from "../context";
+import { getDevicePlaceholders, getFilterValue, Placeholders } from "../convert";
+import { DeviceActionConfig, getDeviceActionTemplate } from "../convert_action";
+import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_condition";
+import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
+import { Action, getParamValue, Info } from "../rule";
 
 const DOMAIN = "light";
 

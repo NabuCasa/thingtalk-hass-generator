@@ -5,50 +5,46 @@ import { DeviceConditionConfig, getDeviceConditionTemplate } from "../convert_co
 import { DeviceTriggerConfig, getDeviceTriggerTemplate } from "../convert_trigger";
 import { Action, getParamValue, Info } from "../rule";
 
+const DOMAIN = "media_player";
+
 export const TRIGGERS = {
-  state: (
+  power: (
     info: Info,
     context: Context
   ): { automation: DeviceTriggerConfig; placeholders: Placeholders } => {
-    const trigger: DeviceTriggerConfig = getDeviceTriggerTemplate("cover");
+    const trigger: DeviceTriggerConfig = getDeviceTriggerTemplate(DOMAIN);
     return {
-      automation: {
-        ...trigger,
-        type: getFilterValue(info, context) === "open" ? "opened" : "closed"
-      },
-      placeholders: getDevicePlaceholders("cover", info.invocation?.selector)
+      automation: { ...trigger, type: `turned_${getFilterValue(info, context)}` },
+      placeholders: getDevicePlaceholders(DOMAIN, info.invocation?.selector)
     };
   }
 };
 
 export const CONDITIONS = {
-  state: (
+  power: (
     info: Info,
     context: Context
   ): { automation: DeviceConditionConfig; placeholders: Placeholders } => {
-    const condition: DeviceConditionConfig = getDeviceConditionTemplate("cover");
+    const condition: DeviceConditionConfig = getDeviceConditionTemplate(DOMAIN);
     return {
-      automation: {
-        ...condition,
-        type: getFilterValue(info, context) === "open" ? "is_open" : "is_closed"
-      },
-      placeholders: getDevicePlaceholders("cover")
+      automation: { ...condition, type: `is_${getFilterValue(info, context)}` },
+      placeholders: getDevicePlaceholders(DOMAIN, info.invocation?.selector)
     };
   }
 };
 
 export const ACTIONS = {
-  set_openclose: (
+  set_power: (
     action: Action,
     context: Context
   ): { automation: DeviceActionConfig; placeholders: Placeholders } => {
     const { in_params, selector } = action.invocation;
     return {
       automation: {
-        ...getDeviceActionTemplate("cover"),
-        type: getParamValue(in_params, "state", action, context)
+        ...getDeviceActionTemplate(DOMAIN),
+        type: `turn_${getParamValue(in_params, "power", action, context)}`
       },
-      placeholders: getDevicePlaceholders("cover", selector)
+      placeholders: getDevicePlaceholders(DOMAIN, selector)
     };
   }
 };
